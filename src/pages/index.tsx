@@ -1,6 +1,7 @@
 import type { NextPage, NextPageContext } from 'next';
 import Head from 'next/head';
 import { prisma } from '../server/db/client';
+import Table from '../components/Table';
 import axios from 'axios';
 
 interface ParkData {
@@ -17,6 +18,18 @@ interface IProps {
   totalPages: number;
   page: number;
 }
+
+interface TableColumn<T> {
+  field: keyof T;
+  headerName: string;
+}
+
+const columns: TableColumn<ParkData>[] = [
+  { field: 'fullname', headerName: 'Park Name' },
+  { field: 'parkcode', headerName: 'Park Code' },
+  { field: 'states', headerName: 'State(s)' },
+  { field: 'designation', headerName: 'Designation' },
+];
 
 const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
   return (
@@ -72,36 +85,8 @@ const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
             />
           </div>
         </div>
-        <table className="min-w-full leading-normal">
-          <thead>
-            <tr>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Park Code
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                State(s)
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Designation
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((park) => {
-              return (
-                <tr key={park.id}>
-                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.fullname}</td>
-                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.parkcode}</td>
-                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.states}</td>
-                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.designation}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+
+        <Table<ParkData> rows={results} columns={columns} />
         <div className="container mx-auto px-4">
           <nav
             className="flex flex-row flex-nowrap justify-between md:justify-center items-center"
