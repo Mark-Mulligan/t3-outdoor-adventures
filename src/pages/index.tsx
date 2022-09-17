@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Home: NextPage = () => {
   const postParkData = async () => {
-    const { data } = await axios.get('/api/parks');
+    const { data } = await axios.get('/api/parks?page=1&limit=10');
     console.log(data);
   };
 
