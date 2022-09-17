@@ -1,13 +1,24 @@
-import type { NextPage } from 'next';
+import type { NextPage, NextPageContext } from 'next';
 import Head from 'next/head';
+import { prisma } from '../server/db/client';
 import axios from 'axios';
 
-const Home: NextPage = () => {
-  const postParkData = async () => {
-    const { data } = await axios.get('/api/parks?page=1&limit=10');
-    console.log(data);
-  };
+interface ParkData {
+  id: string;
+  fullname: string;
+  parkcode: string;
+  states: string;
+  designation: string;
+}
 
+interface IProps {
+  results: ParkData[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+const Home: NextPage<IProps> = ({ results, totalCount, totalPages, currentPage }) => {
   return (
     <>
       <Head>
@@ -20,7 +31,7 @@ const Home: NextPage = () => {
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
-              City
+              Park Name
             </label>
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -61,9 +72,63 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
+        <table className="table-auto">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Park Code</th>
+              <th>State(s)</th>
+              <th>Designation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((park) => {
+              return (
+                <tr key={park.id}>
+                  <td>{park.fullname}</td>
+                  <td>{park.parkcode}</td>
+                  <td>{park.states}</td>
+                  <td>{park.designation}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </main>
     </>
   );
 };
 
 export default Home;
+
+export async function getStaticProps(context: NextPageContext) {
+  const currentPage = 1;
+  const limit = 10;
+
+  try {
+    const allResults = await prisma.nationalParksData.findMany();
+    const offset = (currentPage - 1) * limit;
+    const endIndex = currentPage * limit;
+    const results = allResults.slice(offset, endIndex);
+    const totalCount = allResults.length;
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      props: {
+        results,
+        totalCount,
+        totalPages,
+        currentPage,
+      }, // will be passed to the page component as props
+    };
+  } catch (err) {
+    return {
+      props: {
+        results: [],
+        totalCount: 1,
+        totalPages: 1,
+        currentPage: 1,
+      }, // will be passed to the page component as props
+    };
+  }
+}
