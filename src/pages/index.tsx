@@ -15,10 +15,10 @@ interface IProps {
   results: ParkData[];
   totalCount: number;
   totalPages: number;
-  currentPage: number;
+  page: number;
 }
 
-const Home: NextPage<IProps> = ({ results, totalCount, totalPages, currentPage }) => {
+const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
   return (
     <>
       <Head>
@@ -72,28 +72,99 @@ const Home: NextPage<IProps> = ({ results, totalCount, totalPages, currentPage }
             />
           </div>
         </div>
-        <table className="table-auto">
+        <table className="min-w-full leading-normal">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Park Code</th>
-              <th>State(s)</th>
-              <th>Designation</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                Park Code
+              </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                State(s)
+              </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                Designation
+              </th>
             </tr>
           </thead>
           <tbody>
             {results.map((park) => {
               return (
                 <tr key={park.id}>
-                  <td>{park.fullname}</td>
-                  <td>{park.parkcode}</td>
-                  <td>{park.states}</td>
-                  <td>{park.designation}</td>
+                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.fullname}</td>
+                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.parkcode}</td>
+                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.states}</td>
+                  <td className="px-5 py-4 border-b border-gray-200 bg-white text-sm">{park.designation}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+        <div className="container mx-auto px-4">
+          <nav
+            className="flex flex-row flex-nowrap justify-between md:justify-center items-center"
+            aria-label="Pagination"
+          >
+            <a
+              className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Previous Page"
+            >
+              <span className="sr-only">Previous Page</span>
+              <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
+                <path d="M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"></path>
+              </svg>
+            </a>
+            <a
+              className="hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Page 1"
+            >
+              1
+            </a>
+            <a
+              className="hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Page 2"
+            >
+              2
+            </a>
+            <a
+              className="hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-black bg-black text-white pointer-events-none"
+              href="#"
+              aria-current="page"
+              title="Page 3"
+            >
+              3
+            </a>
+            <a
+              className="hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Page 4"
+            >
+              4
+            </a>
+            <a
+              className="hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Page 5"
+            >
+              5
+            </a>
+            <a
+              className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+              href="#"
+              title="Next Page"
+            >
+              <span className="sr-only">Next Page</span>
+              <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
+                <path d="M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
+              </svg>
+            </a>
+          </nav>
+        </div>
       </main>
     </>
   );
@@ -102,13 +173,13 @@ const Home: NextPage<IProps> = ({ results, totalCount, totalPages, currentPage }
 export default Home;
 
 export async function getStaticProps(context: NextPageContext) {
-  const currentPage = 1;
+  const page = 1;
   const limit = 10;
 
   try {
     const allResults = await prisma.nationalParksData.findMany();
-    const offset = (currentPage - 1) * limit;
-    const endIndex = currentPage * limit;
+    const offset = (page - 1) * limit;
+    const endIndex = page * limit;
     const results = allResults.slice(offset, endIndex);
     const totalCount = allResults.length;
     const totalPages = Math.ceil(totalCount / limit);
@@ -118,7 +189,7 @@ export async function getStaticProps(context: NextPageContext) {
         results,
         totalCount,
         totalPages,
-        currentPage,
+        page,
       }, // will be passed to the page component as props
     };
   } catch (err) {
@@ -127,7 +198,7 @@ export async function getStaticProps(context: NextPageContext) {
         results: [],
         totalCount: 1,
         totalPages: 1,
-        currentPage: 1,
+        page: 1,
       }, // will be passed to the page component as props
     };
   }
