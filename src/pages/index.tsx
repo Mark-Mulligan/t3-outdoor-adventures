@@ -1,6 +1,14 @@
+// React
+import { useState, useEffect } from 'react';
+
+// Next
 import type { NextPage, NextPageContext } from 'next';
 import Head from 'next/head';
+
+// Prisma
 import { prisma } from '../server/db/client';
+
+// Components
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
 
@@ -13,11 +21,7 @@ interface ParkData {
 }
 
 interface IProps {
-  results: ParkData[];
-  totalCount: number;
-  totalPages: number;
-  page: number;
-  limit: number;
+  parks: ParkData[];
 }
 
 interface TableColumn<T> {
@@ -32,7 +36,19 @@ const columns: TableColumn<ParkData>[] = [
   { field: 'designation', headerName: 'Designation' },
 ];
 
-const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
+const Home: NextPage<IProps> = ({ parks }) => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalPages, setTotalPages] = useState(47);
+  const [parkResults, setParkResults] = useState<ParkData[]>([]);
+
+  useEffect(() => {
+    const offset = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = parks.slice(offset, endIndex);
+    setParkResults(results);
+  }, [page, limit, parks]);
+
   return (
     <>
       <Head>
@@ -87,8 +103,8 @@ const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
           </div>
         </div>
 
-        <Table<ParkData> rows={results} columns={columns} />
-        <Pagination page={page} totalPages={totalPages} />
+        <Table<ParkData> rows={parkResults} columns={columns} />
+        <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       </main>
     </>
   );
@@ -97,33 +113,18 @@ const Home: NextPage<IProps> = ({ results, totalCount, totalPages, page }) => {
 export default Home;
 
 export async function getStaticProps(context: NextPageContext) {
-  const page = 1;
-  const limit = 10;
-
   try {
-    const allResults = await prisma.nationalParksData.findMany();
-    const offset = (page - 1) * limit;
-    const endIndex = page * limit;
-    const results = allResults.slice(offset, endIndex);
-    const totalCount = allResults.length;
-    const totalPages = Math.ceil(totalCount / limit);
+    const parks = await prisma.nationalParksData.findMany();
 
     return {
       props: {
-        results,
-        totalCount,
-        totalPages,
-        limit,
-        page,
+        parks,
       }, // will be passed to the page component as props
     };
   } catch (err) {
     return {
       props: {
-        results: [],
-        totalCount: 1,
-        totalPages: 1,
-        page: 1,
+        parks: [],
       }, // will be passed to the page component as props
     };
   }

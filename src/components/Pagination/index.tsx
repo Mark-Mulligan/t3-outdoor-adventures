@@ -1,13 +1,20 @@
-import { FC } from 'react';
+// React
+import { FC, Dispatch, SetStateAction } from 'react';
+
+// Next
+import Link from 'next/link';
+
+// Components
 import PageBtn from './PageBtn';
 import RangePlaceHolder from './RangePlaceHolder';
 
 interface IProps {
   page: number;
+  setPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
 }
 
-const Pagination: FC<IProps> = ({ page, totalPages }) => {
+const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
   const renderPageNumbers = () => {
     let btnText = [];
 
@@ -37,8 +44,8 @@ const Pagination: FC<IProps> = ({ page, totalPages }) => {
       <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
         <a
           className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
-          href="#"
           title="Previous Page"
+          onClick={() => setPage(page - 1)}
         >
           <span className="sr-only">Previous Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
@@ -47,9 +54,10 @@ const Pagination: FC<IProps> = ({ page, totalPages }) => {
         </a>
         {renderPageNumbers()}
         <a
-          className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
-          href="#"
+          className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 text-black hover:border-gray-300"
           title="Next Page"
+          href="#"
+          onClick={() => setPage(page + 1)}
         >
           <span className="sr-only">Next Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
