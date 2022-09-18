@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // Next
 import type { NextPage, NextPageContext } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Prisma
@@ -37,10 +38,22 @@ const columns: TableColumn<ParkData>[] = [
 ];
 
 const Home: NextPage<IProps> = ({ parks }) => {
+  const router = useRouter();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(47);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
+
+  useEffect(() => {
+    console.log('router query', router.query);
+    const queryPage = router.query.page || '';
+
+    if (queryPage) {
+      console.log('this ran');
+      setPage(Number(queryPage));
+    }
+  }, [router.query.page]);
 
   useEffect(() => {
     const offset = (page - 1) * limit;

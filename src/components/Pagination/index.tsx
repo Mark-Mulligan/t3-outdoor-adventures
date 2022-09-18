@@ -3,6 +3,10 @@ import { FC, Dispatch, SetStateAction } from 'react';
 
 // Next
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+// Libraries
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import PageBtn from './PageBtn';
@@ -15,6 +19,8 @@ interface IProps {
 }
 
 const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
+  const router = useRouter();
+
   const renderPageNumbers = () => {
     let btnText = [];
 
@@ -32,10 +38,10 @@ const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
 
     return btnText.map((text) => {
       if (typeof text === 'number') {
-        return <PageBtn pageLabel={text} currentPage={page} />;
+        return <PageBtn key={uuidv4()} pageLabel={text} currentPage={page} />;
       }
 
-      return <RangePlaceHolder />;
+      return <RangePlaceHolder key={uuidv4()} />;
     });
   };
 
@@ -45,7 +51,7 @@ const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
         <a
           className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
           title="Previous Page"
-          onClick={() => setPage(page - 1)}
+          onClick={() => router.push({ pathname: '/', query: { page: page - 1 } }, undefined, { shallow: true })}
         >
           <span className="sr-only">Previous Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
@@ -56,8 +62,7 @@ const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
         <a
           className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 text-black hover:border-gray-300"
           title="Next Page"
-          href="#"
-          onClick={() => setPage(page + 1)}
+          onClick={() => router.push({ pathname: '/', query: { page: page + 1 } }, undefined, { shallow: true })}
         >
           <span className="sr-only">Next Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
