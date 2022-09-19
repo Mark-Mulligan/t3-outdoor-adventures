@@ -46,13 +46,23 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
     });
   };
 
+  const createQueryObject = (key: string, value: string | number) => {
+    if (router && router.query) {
+      return { ...router.query, [key]: value };
+    }
+
+    return { key: value };
+  };
+
   return (
-    <div className="container px-4">
+    <div className="container px-4 py-2">
       <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
         <button
           className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
           title="Previous Page"
-          onClick={() => router.push({ pathname: '/', query: { page: page - 1 } }, undefined, { shallow: true })}
+          onClick={() =>
+            router.push({ pathname: '/', query: createQueryObject('page', page - 1) }, undefined, { shallow: true })
+          }
           disabled={page === 1}
         >
           <span className="sr-only">Previous Page</span>
@@ -64,7 +74,9 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         <button
           className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 text-black hover:border-gray-300"
           title="Next Page"
-          onClick={() => router.push({ pathname: '/', query: { page: page + 1 } }, undefined, { shallow: true })}
+          onClick={() =>
+            router.push({ pathname: '/', query: createQueryObject('page', page + 1) }, undefined, { shallow: true })
+          }
           disabled={page === totalPages}
         >
           <span className="sr-only">Next Page</span>
@@ -74,28 +86,32 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         </button>
       </nav>
       <div>
-        <p>
+        <p className="text-center mt-2 mb-2">
           Showing {(page - 1) * limit + 1} to {page * limit} of {totalResults} results
         </p>
-      </div>
-      <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
-          State
-        </label>
-        <div className="relative">
-          <select
-            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="grid-state"
-          >
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
+        <div className="flex items-center justify-center">
+          <div className="relative mr-2">
+            <select
+              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-state"
+              value={limit}
+              onChange={(e) =>
+                router.push({ pathname: '/', query: createQueryObject('limit', e.target.value) }, undefined, {
+                  shallow: true,
+                })
+              }
+            >
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
           </div>
+          <p>Results Per Page</p>
         </div>
       </div>
     </div>

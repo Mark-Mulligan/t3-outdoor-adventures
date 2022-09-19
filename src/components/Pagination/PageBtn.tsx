@@ -16,10 +16,20 @@ const activeStyles = `bg-black text-white`;
 const PageBtn: FC<IProps> = ({ pageNumber, currentPage }) => {
   const router = useRouter();
 
+  const createQueryObject = (key: string, value: string | number) => {
+    if (router && router.query) {
+      return { ...router.query, [key]: value };
+    }
+
+    return { key: value };
+  };
+
   return (
     <button
       className={`${baseStyles} ${pageNumber === currentPage ? activeStyles : nonActiveStlyes}`}
-      onClick={() => router.push({ pathname: '/', query: { page: pageNumber } }, undefined, { shallow: true })}
+      onClick={() =>
+        router.push({ pathname: '/', query: createQueryObject('page', pageNumber) }, undefined, { shallow: true })
+      }
     >
       {pageNumber}
     </button>

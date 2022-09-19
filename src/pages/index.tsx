@@ -49,12 +49,16 @@ const Home: NextPage<IProps> = ({ parks }) => {
   useEffect(() => {
     console.log('router query', router.query);
     const queryPage = router.query.page || '';
+    const queryLimit = router.query.limit || '';
 
     if (queryPage) {
-      console.log('this ran');
       setPage(Number(queryPage));
     }
-  }, [router.query.page]);
+
+    if (queryLimit) {
+      setLimit(Number(queryLimit));
+    }
+  }, [router.query]);
 
   useEffect(() => {
     const offset = (page - 1) * limit;
@@ -62,6 +66,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const results = parks.slice(offset, endIndex);
     setParkResults(results);
     setTotalResults(parks.length);
+    setTotalPages(Math.ceil(parks.length / limit));
   }, [page, limit, parks]);
 
   return (
