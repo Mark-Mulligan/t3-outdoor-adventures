@@ -10,14 +10,15 @@ import Head from 'next/head';
 import { prisma } from '../server/db/client';
 
 // React Select
-import Select, { MultiValue, StylesConfig } from 'react-select';
+import { MultiValue } from 'react-select';
 
 // Components
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
+import MultiSelect from '../components/MultiSelect';
 
 // Utils
-import { stateList } from '../utils/util';
+import { stateList, designationList } from '../utils/util';
 
 interface ParkData {
   id: string;
@@ -48,48 +49,6 @@ const columns: TableColumn<ParkData>[] = [
   { field: 'designation', headerName: 'Designation' },
 ];
 
-const customStyles: StylesConfig<SelectOption> = {
-  control: (provided, state) => ({
-    ...provided,
-    borderRadius: '0.5rem',
-    fontSize: '0.875rem',
-    lineHeight: '1.25rem',
-    background: 'rgb(55, 65, 81)',
-  }),
-  multiValue: (provided, state) => {
-    return {
-      ...provided,
-      margin: 0,
-      marginRight: 5,
-      marginBottom: 5,
-      padding: 0,
-    };
-  },
-  multiValueLabel: (provided, state) => ({
-    ...provided,
-    padding: 0,
-  }),
-  placeholder: (provided) => ({
-    ...provided,
-    marginBottom: 5,
-    color: '#a0aec0',
-  }),
-  input: (provided, state) => ({
-    ...provided,
-    margin: 0,
-    marginBottom: 5,
-    padding: 0,
-    color: 'white',
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    paddingTop: '0.63rem',
-    paddingLeft: '0.625rem',
-    paddingRight: '0.625rem',
-    paddingBottom: 'calc(0.63rem - 5px)',
-  }),
-};
-
 const Home: NextPage<IProps> = ({ parks }) => {
   const router = useRouter();
 
@@ -99,6 +58,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [totalResults, setTotalResults] = useState(463);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
+  const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
 
   useEffect(() => {
     console.log('router query', router.query);
@@ -132,7 +92,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
       </Head>
 
       <main className="container mx-auto">
-        <div className="flex flex-wrap -mx-3 mb-2">
+        <div className="flex flex-wrap -mx-3 pt-5 pb-5">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="grid-city">
               Park Name
@@ -145,30 +105,17 @@ const Home: NextPage<IProps> = ({ parks }) => {
             />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="grid-state">
               State
             </label>
-            <div>
-              <Select
-                styles={customStyles}
-                value={selectedStates}
-                options={stateList}
-                onChange={(newValue: MultiValue<SelectOption>) => setSelectedStates(newValue)}
-                isMulti
-                isSearchable
-              />
-            </div>
+
+            <MultiSelect value={selectedStates} options={stateList} setValue={setSelectedStates} />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-zip">
-              Zip
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="grid-zip">
+              Designation
             </label>
-            <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-zip"
-              type="text"
-              placeholder="90210"
-            />
+            <MultiSelect value={selectedDesignations} options={designationList} setValue={setSelectedDesignations} />
           </div>
         </div>
 
