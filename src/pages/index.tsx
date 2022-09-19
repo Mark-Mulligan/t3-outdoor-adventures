@@ -43,6 +43,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(47);
+  const [totalResults, setTotalResults] = useState(463);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const endIndex = page * limit;
     const results = parks.slice(offset, endIndex);
     setParkResults(results);
+    setTotalResults(parks.length);
   }, [page, limit, parks]);
 
   return (
@@ -117,7 +119,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
         </div>
 
         <Table<ParkData> rows={parkResults} columns={columns} />
-        <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+        <Pagination page={page} limit={limit} totalPages={totalPages} totalResults={totalResults} />
       </main>
     </>
   );

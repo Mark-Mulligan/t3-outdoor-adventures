@@ -35,7 +35,7 @@ const Table = <T extends object>({ columns, rows }: IProps<T>) => {
               {columns.map((column) => {
                 const data: any = row[column.field];
                 return (
-                  <td key={uuidv4()} className="px-5 py-4 border-b border-gray-200 bg-white text-sm">
+                  <td key={uuidv4()} className="px-5 py-3 border-b border-gray-200 bg-white text-sm">
                     {data}
                   </td>
                 );

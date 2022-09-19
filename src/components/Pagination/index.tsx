@@ -14,11 +14,12 @@ import RangePlaceHolder from './RangePlaceHolder';
 
 interface IProps {
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  limit: number;
   totalPages: number;
+  totalResults: number;
 }
 
-const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
+const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
   const router = useRouter();
 
   const renderPageNumbers = () => {
@@ -38,7 +39,7 @@ const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
 
     return btnText.map((text) => {
       if (typeof text === 'number') {
-        return <PageBtn key={uuidv4()} pageLabel={text} currentPage={page} />;
+        return <PageBtn key={uuidv4()} pageNumber={text} currentPage={page} />;
       }
 
       return <RangePlaceHolder key={uuidv4()} />;
@@ -46,30 +47,57 @@ const Pagination: FC<IProps> = ({ page, setPage, totalPages }) => {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container px-4">
       <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
-        <a
+        <button
           className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
           title="Previous Page"
           onClick={() => router.push({ pathname: '/', query: { page: page - 1 } }, undefined, { shallow: true })}
+          disabled={page === 1}
         >
           <span className="sr-only">Previous Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
             <path d="M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"></path>
           </svg>
-        </a>
+        </button>
         {renderPageNumbers()}
-        <a
+        <button
           className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 text-black hover:border-gray-300"
           title="Next Page"
           onClick={() => router.push({ pathname: '/', query: { page: page + 1 } }, undefined, { shallow: true })}
+          disabled={page === totalPages}
         >
           <span className="sr-only">Next Page</span>
           <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
             <path d="M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
           </svg>
-        </a>
+        </button>
       </nav>
+      <div>
+        <p>
+          Showing {(page - 1) * limit + 1} to {page * limit} of {totalResults} results
+        </p>
+      </div>
+      <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
+          State
+        </label>
+        <div className="relative">
+          <select
+            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="grid-state"
+          >
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

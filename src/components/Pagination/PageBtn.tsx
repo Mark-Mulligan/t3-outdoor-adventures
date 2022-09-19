@@ -1,7 +1,11 @@
+// React
 import { FC } from 'react';
 
+// Next
+import { useRouter } from 'next/router';
+
 interface IProps {
-  pageLabel: number;
+  pageNumber: number;
   currentPage: number;
 }
 
@@ -9,15 +13,16 @@ const baseStyles = `hidden md:flex w-10 h-10 mx-1 justify-center items-center ro
 const nonActiveStlyes = `bg-white text-black`;
 const activeStyles = `bg-black text-white`;
 
-const PageBtn: FC<IProps> = ({ pageLabel, currentPage }) => {
+const PageBtn: FC<IProps> = ({ pageNumber, currentPage }) => {
+  const router = useRouter();
+
   return (
-    <a
-      className={`${baseStyles} ${pageLabel === currentPage ? activeStyles : nonActiveStlyes}`}
-      href="#"
-      title={`Page ${pageLabel}`}
+    <button
+      className={`${baseStyles} ${pageNumber === currentPage ? activeStyles : nonActiveStlyes}`}
+      onClick={() => router.push({ pathname: '/', query: { page: pageNumber } }, undefined, { shallow: true })}
     >
-      {pageLabel}
-    </a>
+      {pageNumber}
+    </button>
   );
 };
 
