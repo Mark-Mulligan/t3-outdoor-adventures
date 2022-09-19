@@ -19,6 +19,7 @@ import MultiSelect from '../components/MultiSelect';
 
 // Utils
 import { stateList, designationList } from '../utils/util';
+import { createQueryObject, removeQueryKey } from '../utils/routing';
 
 interface ParkData {
   id: string;
@@ -60,10 +61,42 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
 
+  const handleStatesChange = (newValue: MultiValue<SelectOption>) => {
+    setSelectedStates(newValue);
+
+    const stateValues = newValue.map((option) => {
+      return option.value;
+    });
+    const stateValuesStr = stateValues.join(',');
+
+    if (!stateValuesStr) {
+      router.push({ pathname: '/', query: removeQueryKey(router, 'states') }, undefined, {
+        shallow: true,
+      });
+      return;
+    }
+
+    router.push({ pathname: '/', query: createQueryObject(router, 'states', stateValuesStr) }, undefined, {
+      shallow: true,
+    });
+  };
+
+  const handleDesignationChange = (newValue: MultiValue<SelectOption>) => {
+    setSelectedDesignations(newValue);
+
+    const desValues = newValue.map((option) => {
+      return option.value;
+    });
+    const desValuesStr = desValues.join(',');
+    router.push({ pathname: '/', query: createQueryObject(router, 'designation', desValuesStr) }, undefined, {
+      shallow: true,
+    });
+  };
+
   useEffect(() => {
-    console.log('router query', router.query);
     const queryPage = router.query.page || '';
     const queryLimit = router.query.limit || '';
+    const queryStates = router.query.states || '';
 
     if (queryPage) {
       setPage(Number(queryPage));
@@ -71,6 +104,10 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
     if (queryLimit) {
       setLimit(Number(queryLimit));
+    }
+
+    if (queryStates) {
+      console.log('queryStates', queryStates);
     }
   }, [router.query]);
 
@@ -109,13 +146,18 @@ const Home: NextPage<IProps> = ({ parks }) => {
               State
             </label>
 
-            <MultiSelect value={selectedStates} options={stateList} setValue={setSelectedStates} />
+            <MultiSelect id="statesSelect" value={selectedStates} options={stateList} onChange={handleStatesChange} />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="grid-zip">
               Designation
             </label>
-            <MultiSelect value={selectedDesignations} options={designationList} setValue={setSelectedDesignations} />
+            <MultiSelect
+              id="designationSelect"
+              value={selectedDesignations}
+              options={designationList}
+              onChange={handleDesignationChange}
+            />
           </div>
         </div>
 

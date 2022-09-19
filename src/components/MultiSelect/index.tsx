@@ -53,21 +53,15 @@ const customStyles: StylesConfig<SelectOption> = {
 };
 
 interface IProps {
+  id: string;
   value: MultiValue<SelectOption> | null;
-  setValue: Dispatch<SetStateAction<MultiValue<SelectOption> | null>>;
+  onChange: (newValue: MultiValue<SelectOption>) => void;
   options: SelectOption[];
 }
 
-const MultiSelect: FC<IProps> = ({ value, options, setValue }) => {
+const MultiSelect: FC<IProps> = ({ id, value, options, onChange }) => {
   return (
-    <Select
-      styles={customStyles}
-      value={value}
-      options={options}
-      onChange={(newValue: MultiValue<SelectOption>) => setValue(newValue)}
-      isMulti
-      isSearchable
-    />
+    <Select id={id} styles={customStyles} value={value} options={options} onChange={onChange} isMulti isSearchable />
   );
 };
 
