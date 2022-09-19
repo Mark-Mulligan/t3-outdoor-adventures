@@ -49,22 +49,45 @@ const columns: TableColumn<ParkData>[] = [
 ];
 
 const customStyles: StylesConfig<SelectOption> = {
-  option: (provided, state) => ({
+  control: (provided, state) => ({
     ...provided,
-    borderBottom: '1px dotted pink',
-    color: state.isSelected ? 'red' : 'blue',
-    padding: 20,
+    borderRadius: '0.5rem',
+    fontSize: '0.875rem',
+    lineHeight: '1.25rem',
+    background: 'rgb(55, 65, 81)',
   }),
-  control: () => ({
-    // none of react-select's styles are passed to <Control />
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
+  multiValue: (provided, state) => {
+    return {
+      ...provided,
+      margin: 0,
+      marginRight: 5,
+      marginBottom: 5,
+      padding: 0,
+    };
   },
+  multiValueLabel: (provided, state) => ({
+    ...provided,
+    padding: 0,
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    marginBottom: 5,
+    color: '#a0aec0',
+  }),
+  input: (provided, state) => ({
+    ...provided,
+    margin: 0,
+    marginBottom: 5,
+    padding: 0,
+    color: 'white',
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    paddingTop: '0.63rem',
+    paddingLeft: '0.625rem',
+    paddingRight: '0.625rem',
+    paddingBottom: 'calc(0.63rem - 5px)',
+  }),
 };
 
 const Home: NextPage<IProps> = ({ parks }) => {
@@ -127,6 +150,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
             </label>
             <div>
               <Select
+                styles={customStyles}
                 value={selectedStates}
                 options={stateList}
                 onChange={(newValue: MultiValue<SelectOption>) => setSelectedStates(newValue)}
