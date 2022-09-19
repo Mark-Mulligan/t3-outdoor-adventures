@@ -9,9 +9,15 @@ import Head from 'next/head';
 // Prisma
 import { prisma } from '../server/db/client';
 
+// React Select
+import Select, { MultiValue, StylesConfig } from 'react-select';
+
 // Components
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
+
+// Utils
+import { stateList } from '../utils/util';
 
 interface ParkData {
   id: string;
@@ -30,12 +36,36 @@ interface TableColumn<T> {
   headerName: string;
 }
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 const columns: TableColumn<ParkData>[] = [
   { field: 'fullname', headerName: 'Park Name' },
   { field: 'parkcode', headerName: 'Park Code' },
   { field: 'states', headerName: 'State(s)' },
   { field: 'designation', headerName: 'Designation' },
 ];
+
+const customStyles: StylesConfig<SelectOption> = {
+  option: (provided, state) => ({
+    ...provided,
+    borderBottom: '1px dotted pink',
+    color: state.isSelected ? 'red' : 'blue',
+    padding: 20,
+  }),
+  control: () => ({
+    // none of react-select's styles are passed to <Control />
+    width: 200,
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+    const transition = 'opacity 300ms';
+
+    return { ...provided, opacity, transition };
+  },
+};
 
 const Home: NextPage<IProps> = ({ parks }) => {
   const router = useRouter();
@@ -45,6 +75,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [totalPages, setTotalPages] = useState(47);
   const [totalResults, setTotalResults] = useState(463);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
+  const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
 
   useEffect(() => {
     console.log('router query', router.query);
@@ -80,11 +111,11 @@ const Home: NextPage<IProps> = ({ parks }) => {
       <main className="container mx-auto">
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="grid-city">
               Park Name
             </label>
             <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               id="grid-city"
               type="text"
               placeholder="Albuquerque"
@@ -94,20 +125,14 @@ const Home: NextPage<IProps> = ({ parks }) => {
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
               State
             </label>
-            <div className="relative">
-              <select
-                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-state"
-              >
-                <option>New Mexico</option>
-                <option>Missouri</option>
-                <option>Texas</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
+            <div>
+              <Select
+                value={selectedStates}
+                options={stateList}
+                onChange={(newValue: MultiValue<SelectOption>) => setSelectedStates(newValue)}
+                isMulti
+                isSearchable
+              />
             </div>
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
