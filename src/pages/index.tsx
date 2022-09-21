@@ -62,8 +62,6 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
 
   const handleStatesChange = (newValue: MultiValue<SelectOption>) => {
-    setSelectedStates(newValue);
-
     const stateValues = newValue.map((option) => {
       return option.value;
     });
@@ -97,6 +95,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const queryPage = router.query.page || '';
     const queryLimit = router.query.limit || '';
     const queryStates = router.query.states || '';
+    const queryDesignations = router.query.designation || '';
 
     if (queryPage) {
       setPage(Number(queryPage));
@@ -106,8 +105,19 @@ const Home: NextPage<IProps> = ({ parks }) => {
       setLimit(Number(queryLimit));
     }
 
-    if (queryStates) {
-      console.log('queryStates', queryStates);
+    if (queryStates && typeof queryStates === 'string') {
+      const stateValues = queryStates.split(',');
+      const result: SelectOption[] = [];
+
+      stateList.forEach((state) => {
+        if (stateValues.includes(state.value)) {
+          result.push(state);
+        }
+      });
+
+      setSelectedStates(result);
+    } else {
+      setSelectedStates(null);
     }
   }, [router.query]);
 
