@@ -1,16 +1,16 @@
 // React
-import { FC, Dispatch, SetStateAction } from "react";
+import { FC, Dispatch, SetStateAction } from 'react';
 
 // Next
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // Libraries
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
-import PageBtn from "./PageBtn";
-import RangePlaceHolder from "./RangePlaceHolder";
+import PageBtn from './PageBtn';
+import RangePlaceHolder from './RangePlaceHolder';
 
 interface IProps {
   page: number;
@@ -30,15 +30,15 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         btnText.push(i);
       }
     } else if (page > 4 && page < totalPages - 4) {
-      btnText = [1, "...", page - 1, page, page + 1, "...", totalPages];
+      btnText = [1, '...', page - 1, page, page + 1, '...', totalPages];
     } else if (page > 4) {
-      btnText = [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+      btnText = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
     } else {
-      btnText = [1, 2, 3, 4, 5, "...", totalPages];
+      btnText = [1, 2, 3, 4, 5, '...', totalPages];
     }
 
     return btnText.map((text) => {
-      if (typeof text === "number") {
+      if (typeof text === 'number') {
         return <PageBtn key={uuidv4()} pageNumber={text} currentPage={page} />;
       }
 
@@ -58,8 +58,8 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
     <div className="container px-4 py-2 flex justify-between">
       <div>
         <p className="text-center mt-2 mb-2 text-gray-400">
-          Showing <span className="font-semibold text-white">{(page - 1) * limit + 1}</span> to{" "}
-          <span className="font-semibold text-white">{page * limit}</span> of{" "}
+          Showing <span className="font-semibold text-white">{(page - 1) * limit + 1}</span> to{' '}
+          <span className="font-semibold text-white">{page * limit}</span> of{' '}
           <span className="font-semibold text-white">{totalResults}</span> results
         </p>
         <div className="flex items-center justify-center">
@@ -69,12 +69,13 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
               id="grid-state"
               value={limit}
               onChange={(e) =>
-                router.push({ pathname: "/", query: createQueryObject("limit", e.target.value) }, undefined, {
+                router.push({ pathname: '/', query: createQueryObject('limit', e.target.value) }, undefined, {
                   shallow: true,
                 })
               }
             >
               <option>10</option>
+              <option>20</option>
               <option>25</option>
               <option>50</option>
             </select>
@@ -92,7 +93,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           className="block py-2 px-3 ml-0 leading-tight rounded-l-lg border hover:text-gray-700 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
           title="Previous Page"
           onClick={() =>
-            router.push({ pathname: "/", query: createQueryObject("page", page - 1) }, undefined, { shallow: true })
+            router.push({ pathname: '/', query: createQueryObject('page', page - 1) }, undefined, { shallow: true })
           }
           disabled={page === 1}
         >
@@ -116,7 +117,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           className="block py-2 px-3 ml-0 leading-tight rounded-r-lg border hover:text-gray-700 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
           title="Next Page"
           onClick={() =>
-            router.push({ pathname: "/", query: createQueryObject("page", page + 1) }, undefined, { shallow: true })
+            router.push({ pathname: '/', query: createQueryObject('page', page + 1) }, undefined, { shallow: true })
           }
           disabled={page === totalPages}
         >

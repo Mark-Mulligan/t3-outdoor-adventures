@@ -1,25 +1,25 @@
 // React
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 // Next
-import type { NextPage, NextPageContext } from "next";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import type { NextPage, NextPageContext } from 'next';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Prisma
-import { prisma } from "../server/db/client";
+import { prisma } from '../server/db/client';
 
 // React Select
-import { MultiValue } from "react-select";
+import { MultiValue } from 'react-select';
 
 // Components
-import Table from "../components/Table";
-import Pagination from "../components/Pagination";
-import MultiSelect from "../components/MultiSelect";
+import Table from '../components/Table';
+import Pagination from '../components/Pagination';
+import MultiSelect from '../components/MultiSelect';
 
 // Utils
-import { stateList, designationList } from "../utils/util";
-import { createQueryObject, removeQueryKey } from "../utils/routing";
+import { stateList, designationList } from '../utils/util';
+import { createQueryObject, removeQueryKey } from '../utils/routing';
 
 interface ParkData {
   id: string;
@@ -44,10 +44,10 @@ interface SelectOption {
 }
 
 const columns: TableColumn<ParkData>[] = [
-  { field: "fullname", headerName: "Park Name" },
-  { field: "parkcode", headerName: "Park Code" },
-  { field: "states", headerName: "State(s)" },
-  { field: "designation", headerName: "Designation" },
+  { field: 'fullname', headerName: 'Park Name' },
+  { field: 'parkcode', headerName: 'Park Code' },
+  { field: 'states', headerName: 'State(s)' },
+  { field: 'designation', headerName: 'Designation' },
 ];
 
 const Home: NextPage<IProps> = ({ parks }) => {
@@ -61,41 +61,44 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
 
-  const handleStatesChange = (newValue: MultiValue<SelectOption>) => {
-    const stateValues = newValue.map((option) => {
+  const handleSelectChange = (newValue: MultiValue<SelectOption>, queryKey: string) => {
+    const values = newValue.map((option) => {
       return option.value;
     });
-    const stateValuesStr = stateValues.join(",");
+    const valueAsStr = values.join(',');
 
-    if (!stateValuesStr) {
-      router.push({ pathname: "/", query: removeQueryKey(router, "states") }, undefined, {
-        shallow: true,
-      });
+    if (!valueAsStr) {
+      router.push({ pathname: '/', query: removeQueryKey(router, queryKey) }, undefined, { shallow: true });
       return;
     }
 
-    router.push({ pathname: "/", query: createQueryObject(router, "states", stateValuesStr) }, undefined, {
+    router.push({ pathname: '/', query: createQueryObject(router, queryKey, valueAsStr) }, undefined, {
       shallow: true,
     });
   };
 
-  const handleDesignationChange = (newValue: MultiValue<SelectOption>) => {
-    setSelectedDesignations(newValue);
+  const getSelectValuesFromQuery = (
+    queryString: string,
+    selectOptions: SelectOption[],
+    setSelectedOptions: Dispatch<SetStateAction<MultiValue<SelectOption> | null>>,
+  ) => {
+    const values = queryString.split(',');
+    const result: SelectOption[] = [];
 
-    const desValues = newValue.map((option) => {
-      return option.value;
+    selectOptions.forEach((option) => {
+      if (option && values.includes(option.value)) {
+        result.push(option);
+      }
     });
-    const desValuesStr = desValues.join(",");
-    router.push({ pathname: "/", query: createQueryObject(router, "designation", desValuesStr) }, undefined, {
-      shallow: true,
-    });
+
+    setSelectedOptions(result);
   };
 
   useEffect(() => {
-    const queryPage = router.query.page || "";
-    const queryLimit = router.query.limit || "";
-    const queryStates = router.query.states || "";
-    const queryDesignations = router.query.designation || "";
+    const queryPage = router.query.page || '';
+    const queryLimit = router.query.limit || '';
+    const queryStates = router.query.states || '';
+    const queryDesignations = router.query.designation || '';
 
     if (queryPage) {
       setPage(Number(queryPage));
@@ -105,30 +108,46 @@ const Home: NextPage<IProps> = ({ parks }) => {
       setLimit(Number(queryLimit));
     }
 
-    if (queryStates && typeof queryStates === "string") {
-      const stateValues = queryStates.split(",");
-      const result: SelectOption[] = [];
-
-      stateList.forEach((state) => {
-        if (stateValues.includes(state.value)) {
-          result.push(state);
-        }
-      });
-
-      setSelectedStates(result);
+    if (queryStates && typeof queryStates === 'string') {
+      getSelectValuesFromQuery(queryStates, stateList, setSelectedStates);
     } else {
       setSelectedStates(null);
+    }
+
+    if (queryDesignations && typeof queryDesignations === 'string') {
+      getSelectValuesFromQuery(queryDesignations, designationList, setSelectedDesignations);
+    } else {
+      setSelectedDesignations(null);
     }
   }, [router.query]);
 
   useEffect(() => {
     const offset = (page - 1) * limit;
     const endIndex = page * limit;
-    const results = parks.slice(offset, endIndex);
-    setParkResults(results);
-    setTotalResults(parks.length);
-    setTotalPages(Math.ceil(parks.length / limit));
-  }, [page, limit, parks]);
+    let filteredParks = [...parks];
+
+    if (selectedStates && selectedStates.length > 0) {
+      let selectedStatesValues = selectedStates.map((state) => state.value);
+
+      filteredParks = filteredParks.filter((park) => {
+        const parkStatesArr = park.states.toLowerCase().split(',');
+
+        for (let i = 0; i < parkStatesArr.length; i++) {
+          let stateValue = parkStatesArr[i];
+
+          if (stateValue && selectedStatesValues.includes(stateValue)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+    }
+
+    setParkResults(filteredParks.slice(offset, endIndex));
+    setTotalResults(filteredParks.length);
+    setTotalPages(Math.ceil(filteredParks.length / limit));
+  }, [page, limit, parks, selectedStates]);
 
   return (
     <>
@@ -145,7 +164,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               Park Name
             </label>
             <input
-              style={{ outline: "none" }}
+              style={{ outline: 'none' }}
               className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
               placeholder="Albuquerque"
@@ -156,7 +175,12 @@ const Home: NextPage<IProps> = ({ parks }) => {
               State
             </label>
 
-            <MultiSelect id="statesSelect" value={selectedStates} options={stateList} onChange={handleStatesChange} />
+            <MultiSelect
+              id="statesSelect"
+              value={selectedStates}
+              options={stateList}
+              onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, 'states')}
+            />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-zip">
@@ -166,7 +190,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               id="designationSelect"
               value={selectedDesignations}
               options={designationList}
-              onChange={handleDesignationChange}
+              onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, 'designation')}
             />
           </div>
         </div>
