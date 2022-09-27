@@ -55,59 +55,12 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
   };
 
   return (
-    <div className="container px-4 py-2">
-      <nav className="inline-flex items-center -space-x-px" aria-label="Pagination">
-        <button
-          className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          title="Previous Page"
-          onClick={() =>
-            router.push({ pathname: "/", query: createQueryObject("page", page - 1) }, undefined, { shallow: true })
-          }
-          disabled={page === 1}
-        >
-          <span className="sr-only">Previous Page</span>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-        {renderPageNumbers()}
-        <button
-          className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          title="Next Page"
-          onClick={() =>
-            router.push({ pathname: "/", query: createQueryObject("page", page + 1) }, undefined, { shallow: true })
-          }
-          disabled={page === totalPages}
-        >
-          <span className="sr-only">Next Page</span>
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-      </nav>
+    <div className="container px-4 py-2 flex justify-between">
       <div>
-        <p className="text-center mt-2 mb-2">
-          Showing {(page - 1) * limit + 1} to {page * limit} of {totalResults} results
+        <p className="text-center mt-2 mb-2 text-gray-400">
+          Showing <span className="font-semibold text-white">{(page - 1) * limit + 1}</span> to{" "}
+          <span className="font-semibold text-white">{page * limit}</span> of{" "}
+          <span className="font-semibold text-white">{totalResults}</span> results
         </p>
         <div className="flex items-center justify-center">
           <div className="relative mr-2">
@@ -131,9 +84,58 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
               </svg>
             </div>
           </div>
-          <p>Results Per Page</p>
+          <p className="text-gray-400">Results Per Page</p>
         </div>
       </div>
+      <nav className="inline-flex items-center -space-x-px" aria-label="Pagination">
+        <button
+          className="block py-2 px-3 ml-0 leading-tight rounded-l-lg border hover:text-gray-700 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
+          title="Previous Page"
+          onClick={() =>
+            router.push({ pathname: "/", query: createQueryObject("page", page - 1) }, undefined, { shallow: true })
+          }
+          disabled={page === 1}
+        >
+          <span className="sr-only">Previous Page</span>
+          <svg
+            aria-hidden="true"
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+        </button>
+        {renderPageNumbers()}
+        <button
+          className="block py-2 px-3 ml-0 leading-tight rounded-r-lg border hover:text-gray-700 bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
+          title="Next Page"
+          onClick={() =>
+            router.push({ pathname: "/", query: createQueryObject("page", page + 1) }, undefined, { shallow: true })
+          }
+          disabled={page === totalPages}
+        >
+          <span className="sr-only">Next Page</span>
+          <svg
+            aria-hidden="true"
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </nav>
     </div>
   );
 };
