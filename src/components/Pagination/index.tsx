@@ -1,16 +1,16 @@
 // React
-import { FC, Dispatch, SetStateAction } from 'react';
+import { FC, Dispatch, SetStateAction } from "react";
 
 // Next
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 // Libraries
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // Components
-import PageBtn from './PageBtn';
-import RangePlaceHolder from './RangePlaceHolder';
+import PageBtn from "./PageBtn";
+import RangePlaceHolder from "./RangePlaceHolder";
 
 interface IProps {
   page: number;
@@ -30,15 +30,15 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         btnText.push(i);
       }
     } else if (page > 4 && page < totalPages - 4) {
-      btnText = [1, '...', page - 1, page, page + 1, '...', totalPages];
+      btnText = [1, "...", page - 1, page, page + 1, "...", totalPages];
     } else if (page > 4) {
-      btnText = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+      btnText = [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
     } else {
-      btnText = [1, 2, 3, 4, 5, '...', totalPages];
+      btnText = [1, 2, 3, 4, 5, "...", totalPages];
     }
 
     return btnText.map((text) => {
-      if (typeof text === 'number') {
+      if (typeof text === "number") {
         return <PageBtn key={uuidv4()} pageNumber={text} currentPage={page} />;
       }
 
@@ -56,32 +56,52 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
 
   return (
     <div className="container px-4 py-2">
-      <nav className="flex flex-row flex-nowrap justify-between md:justify-center items-center" aria-label="Pagination">
+      <nav className="inline-flex items-center -space-x-px" aria-label="Pagination">
         <button
-          className="flex w-10 h-10 mr-1 justify-center items-center rounded-full border border-gray-200 bg-white text-black hover:border-gray-300"
+          className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           title="Previous Page"
           onClick={() =>
-            router.push({ pathname: '/', query: createQueryObject('page', page - 1) }, undefined, { shallow: true })
+            router.push({ pathname: "/", query: createQueryObject("page", page - 1) }, undefined, { shallow: true })
           }
           disabled={page === 1}
         >
           <span className="sr-only">Previous Page</span>
-          <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
-            <path d="M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"></path>
+          <svg
+            aria-hidden="true"
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
           </svg>
         </button>
         {renderPageNumbers()}
         <button
-          className="flex w-10 h-10 ml-1 justify-center items-center rounded-full border border-gray-200 text-black hover:border-gray-300"
+          className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           title="Next Page"
           onClick={() =>
-            router.push({ pathname: '/', query: createQueryObject('page', page + 1) }, undefined, { shallow: true })
+            router.push({ pathname: "/", query: createQueryObject("page", page + 1) }, undefined, { shallow: true })
           }
           disabled={page === totalPages}
         >
           <span className="sr-only">Next Page</span>
-          <svg className="block w-4 h-4 fill-current" viewBox="0 0 256 512" aria-hidden="true" role="presentation">
-            <path d="M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
+          <svg
+            aria-hidden="true"
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"
+            ></path>
           </svg>
         </button>
       </nav>
@@ -96,7 +116,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
               id="grid-state"
               value={limit}
               onChange={(e) =>
-                router.push({ pathname: '/', query: createQueryObject('limit', e.target.value) }, undefined, {
+                router.push({ pathname: "/", query: createQueryObject("limit", e.target.value) }, undefined, {
                   shallow: true,
                 })
               }
