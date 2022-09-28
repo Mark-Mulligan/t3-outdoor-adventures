@@ -1,4 +1,4 @@
-interface IParkActivity {
+export interface IParkActivity {
   id: string;
   name: string;
 }

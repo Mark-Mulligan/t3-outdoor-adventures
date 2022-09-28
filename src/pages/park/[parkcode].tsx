@@ -7,6 +7,7 @@ import axios from "axios";
 
 // Components
 import ParkInfoSection from "../../components/ParkInfoSection";
+import Activities from "../../components/ParkSections/Activities";
 import Map from "../../components/Map";
 
 // Custom Types
@@ -114,13 +115,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
           </ul>
         </ParkInfoSection>
 
-        <ParkInfoSection title="Activities">
-          <ul>
-            {parkData.activities.map((activity) => {
-              return <li>{activity.name}</li>;
-            })}
-          </ul>
-        </ParkInfoSection>
+        <Activities activities={parkData.activities} />
 
         <ParkInfoSection title="Location">
           <Map googleMapsKey={googleMapsKey} lat={parseFloat(parkData.latitude)} lng={parseFloat(parkData.longitude)} />
