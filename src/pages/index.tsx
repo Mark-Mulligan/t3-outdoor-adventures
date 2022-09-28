@@ -144,6 +144,17 @@ const Home: NextPage<IProps> = ({ parks }) => {
       });
     }
 
+    if (selectedDesignations && selectedDesignations.length > 0) {
+      let selectedDesValues = selectedDesignations.map((des) => des.value);
+
+      filteredParks = filteredParks.filter((park) => {
+        const parkDesignation = park.designation.toLowerCase();
+        return selectedDesValues.includes(parkDesignation);
+      });
+    }
+
+    console.log(filteredParks);
+
     setParkResults(filteredParks.slice(offset, endIndex));
     setTotalResults(filteredParks.length);
     setTotalPages(Math.ceil(filteredParks.length / limit));
