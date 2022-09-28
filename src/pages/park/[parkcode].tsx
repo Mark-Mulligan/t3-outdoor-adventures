@@ -1,26 +1,30 @@
 // Next
-import type { NextPage, NextPageContext } from "next";
-import Head from "next/head";
+import type { NextPage, NextPageContext } from 'next';
+import Head from 'next/head';
 
 // axios
-import axios from "axios";
+import axios from 'axios';
+
+// UUID
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
-import ParkInfoSection from "../../components/ParkInfoSection";
-import Activities from "../../components/ParkSections/Activities";
-import Map from "../../components/Map";
+import ParkInfoSection from '../../components/ParkInfoSection';
+import Activities from '../../components/ParkSections/Activities';
+import Map from '../../components/Map';
+import Contact from '../../components/ParkSections/Contact';
 
 // Custom Types
-import { IParkDataResponse, IParkData, IParkHours } from "../../customTypes/parks";
+import { IParkDataResponse, IParkData, IParkHours } from '../../customTypes/parks';
 
 const hoursAccessKeys: { key: keyof IParkHours; label: string }[] = [
-  { key: "monday", label: "Mon" },
-  { key: "tuesday", label: "Tue" },
-  { key: "wednesday", label: "Wed" },
-  { key: "thursday", label: "Thu" },
-  { key: "friday", label: "Fri" },
-  { key: "saturday", label: "Sat" },
-  { key: "sunday", label: "Sun" },
+  { key: 'monday', label: 'Mon' },
+  { key: 'tuesday', label: 'Tue' },
+  { key: 'wednesday', label: 'Wed' },
+  { key: 'thursday', label: 'Thu' },
+  { key: 'friday', label: 'Fri' },
+  { key: 'saturday', label: 'Sat' },
+  { key: 'sunday', label: 'Sun' },
 ];
 
 interface IProps {
@@ -49,7 +53,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
           <ul>
             {parkData.entranceFees.map((fee) => {
               return (
-                <li className="mb-4">
+                <li key={uuidv4()} className="mb-4">
                   <h4 className="text-white">
                     {fee.title} <span className="italic">${fee.cost}</span>
                   </h4>
@@ -64,7 +68,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
           <ul>
             {parkData.operatingHours.map((hoursData) => {
               return (
-                <li className="mb-6">
+                <li key={uuidv4()} className="mb-6">
                   <h3 className="text-white text-2xl mb-2">{hoursData.name}</h3>
                   <p className="mb-2">{hoursData.description}</p>
                   <div className="grid grid-cols-2">
@@ -73,7 +77,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
                       <ul>
                         {hoursAccessKeys.map((accessKey) => {
                           return (
-                            <li className="flex">
+                            <li key={uuidv4()} className="flex">
                               <span className="w-14">{accessKey.label}</span>
                               <span>{hoursData.standardHours[accessKey.key]}</span>
                             </li>
@@ -86,17 +90,17 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
                       <ul>
                         {hoursData.exceptions.map((exception) => {
                           return (
-                            <li className="mb-4">
+                            <li key={uuidv4()} className="mb-4">
                               <h4 className="text-gray-300 italic">{exception.name}</h4>
                               <p>
                                 {exception.startDate} {exception.endDate && `- ${exception.endDate}`}
                               </p>
-                              {JSON.stringify(exception.exceptionHours) !== "{}" && (
+                              {JSON.stringify(exception.exceptionHours) !== '{}' && (
                                 <ul>
                                   {hoursAccessKeys.map((accessKey) => {
                                     return (
                                       <li className="flex">
-                                        <span className="w-14">{accessKey.label}</span>{" "}
+                                        <span className="w-14">{accessKey.label}</span>{' '}
                                         <span>{hoursData.standardHours[accessKey.key]}</span>
                                       </li>
                                     );
@@ -121,37 +125,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
           <Map googleMapsKey={googleMapsKey} lat={parseFloat(parkData.latitude)} lng={parseFloat(parkData.longitude)} />
         </ParkInfoSection>
 
-        <ParkInfoSection title="Contact Info">
-          <ul>
-            {parkData.contacts.phoneNumbers.map((phoneNum) => {
-              if (phoneNum.type === "Voice") {
-                return (
-                  <li>
-                    <p>
-                      <span className="text-white">Phone:</span> {phoneNum.phoneNumber}
-                    </p>
-                    {phoneNum.extension && <p>Extension: {phoneNum.extension}</p>}
-                    {phoneNum.description && <p>Description: {phoneNum.description}</p>}
-                  </li>
-                );
-              }
-
-              return (
-                <li>
-                  <p>
-                    <span className="text-white">Fax:</span> {phoneNum.phoneNumber}
-                  </p>
-                  {phoneNum.extension && <p>Extension: {phoneNum.extension}</p>}
-                  {phoneNum.description && <p>Description: {phoneNum.description}</p>}
-                </li>
-              );
-            })}
-
-            <li>
-              <span className="text-white">Website:</span> {parkData.url}
-            </li>
-          </ul>
-        </ParkInfoSection>
+        <Contact contacts={parkData.contacts} url={parkData.url} />
       </main>
     </>
   );
@@ -160,13 +134,13 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
 export async function getServerSideProps(context: NextPageContext) {
   const parkCode = context.query.parkcode;
 
-  if (typeof parkCode !== "string") {
+  if (typeof parkCode !== 'string') {
     return;
   }
 
   try {
     const { data } = await axios.get<IParkDataResponse>(
-      `https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${process.env.NATIONAL_PARKS_APIKEY}`
+      `https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${process.env.NATIONAL_PARKS_APIKEY}`,
     );
 
     return {

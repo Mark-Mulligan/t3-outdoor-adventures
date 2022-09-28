@@ -13,7 +13,7 @@ interface IParkAddress {
   type: string;
 }
 
-interface IParkContacts {
+export interface IParkContacts {
   emailAddresses: {
     description: string;
     emailAddress: string;
@@ -22,7 +22,7 @@ interface IParkContacts {
     description: string;
     extension: string;
     phoneNumber: string;
-    type: "Voice" | "Fax";
+    type: 'Voice' | 'Fax';
   }[];
 }
 

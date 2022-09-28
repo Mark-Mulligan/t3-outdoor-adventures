@@ -1,14 +1,17 @@
 // React
-import { FC } from "react";
+import { FC } from 'react';
+
+// UUID
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
-import ParkInfoSection from "../ParkInfoSection";
+import ParkInfoSection from '../ParkInfoSection';
 
 // Custom Types
-import { IParkActivity } from "../../customTypes/parks";
+import { IParkActivity } from '../../customTypes/parks';
 
 // Utils
-import { sortActivitiesByName } from "../../utils/util";
+import { sortActivitiesByName } from '../../utils/util';
 
 interface IProps {
   activities: IParkActivity[];
@@ -24,7 +27,7 @@ const Activities: FC<IProps> = ({ activities }) => {
       return (
         <ul>
           {sortedActivities.map((activity) => (
-            <li>{activity.name}</li>
+            <li key={uuidv4()}>{activity.name}</li>
           ))}
         </ul>
       );
@@ -38,12 +41,12 @@ const Activities: FC<IProps> = ({ activities }) => {
       <ul className="grid grid-cols-2">
         <div>
           {column1Acts.map((activity) => (
-            <li>{activity.name}</li>
+            <li key={uuidv4()}>{activity.name}</li>
           ))}
         </div>
         <div>
           {column2Acts.map((activity) => (
-            <li>{activity.name}</li>
+            <li key={uuidv4()}>{activity.name}</li>
           ))}
         </div>
       </ul>
