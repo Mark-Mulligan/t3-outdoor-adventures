@@ -2,7 +2,6 @@
 import { FC, Dispatch, SetStateAction } from 'react';
 
 // Next
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Libraries
@@ -65,7 +64,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         <div className="flex items-center justify-center">
           <div className="relative mr-2">
             <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="border text-sm rounded-lg block w-full p-2 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               id="grid-state"
               value={limit}
               onChange={(e) =>

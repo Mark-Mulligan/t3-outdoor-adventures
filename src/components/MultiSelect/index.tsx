@@ -1,5 +1,5 @@
 // React
-import { FC, Dispatch, SetStateAction } from 'react';
+import { FC } from 'react';
 
 // React Select
 import Select, { MultiValue, StylesConfig } from 'react-select';
