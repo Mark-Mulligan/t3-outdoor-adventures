@@ -18,11 +18,11 @@ interface IParkContacts {
     description: string;
     emailAddress: string;
   }[];
-  phoneNumber: {
+  phoneNumbers: {
     description: string;
     extension: string;
     phoneNumber: string;
-    type: string;
+    type: "Voice" | "Fax";
   }[];
 }
 
