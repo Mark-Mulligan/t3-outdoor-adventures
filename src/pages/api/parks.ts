@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // import axios from 'axios';
 import { prisma } from '../../server/db/client';
 
-const examples = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
@@ -25,4 +25,4 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default examples;
+export default handler;
