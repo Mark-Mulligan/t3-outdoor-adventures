@@ -10,22 +10,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import ParkInfoSection from '../../components/ParkInfoSection';
+import ParkHours from '../../components/ParkSections/ParkHours';
 import Activities from '../../components/ParkSections/Activities';
 import Map from '../../components/Map';
 import Contact from '../../components/ParkSections/Contact';
 
 // Custom Types
-import { IParkDataResponse, IParkData, IParkHours } from '../../customTypes/parks';
-
-const hoursAccessKeys: { key: keyof IParkHours; label: string }[] = [
-  { key: 'monday', label: 'Mon' },
-  { key: 'tuesday', label: 'Tue' },
-  { key: 'wednesday', label: 'Wed' },
-  { key: 'thursday', label: 'Thu' },
-  { key: 'friday', label: 'Fri' },
-  { key: 'saturday', label: 'Sat' },
-  { key: 'sunday', label: 'Sun' },
-];
+import { IParkDataResponse, IParkData } from '../../customTypes/parks';
 
 interface IProps {
   parkData: IParkData;
@@ -33,8 +24,6 @@ interface IProps {
 }
 
 const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
-  console.log(googleMapsKey);
-
   return (
     <>
       <Head>
@@ -64,60 +53,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
           </ul>
         </ParkInfoSection>
 
-        <ParkInfoSection title="Operating Hours">
-          <ul>
-            {parkData.operatingHours.map((hoursData) => {
-              return (
-                <li key={uuidv4()} className="mb-6">
-                  <h3 className="text-white text-2xl mb-2">{hoursData.name}</h3>
-                  <p className="mb-2">{hoursData.description}</p>
-                  <div className="grid grid-cols-2">
-                    <div>
-                      <h4 className="text-white mb-2">Standard Hours</h4>
-                      <ul>
-                        {hoursAccessKeys.map((accessKey) => {
-                          return (
-                            <li key={uuidv4()} className="flex">
-                              <span className="w-14">{accessKey.label}</span>
-                              <span>{hoursData.standardHours[accessKey.key]}</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="text-white bm-2">Holiday Hours</h4>
-                      <ul>
-                        {hoursData.exceptions.map((exception) => {
-                          return (
-                            <li key={uuidv4()} className="mb-4">
-                              <h4 className="text-gray-300 italic">{exception.name}</h4>
-                              <p>
-                                {exception.startDate} {exception.endDate && `- ${exception.endDate}`}
-                              </p>
-                              {JSON.stringify(exception.exceptionHours) !== '{}' && (
-                                <ul>
-                                  {hoursAccessKeys.map((accessKey) => {
-                                    return (
-                                      <li className="flex">
-                                        <span className="w-14">{accessKey.label}</span>{' '}
-                                        <span>{hoursData.standardHours[accessKey.key]}</span>
-                                      </li>
-                                    );
-                                  })}
-                                </ul>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </ParkInfoSection>
+        <ParkHours operatingHours={parkData.operatingHours} />
 
         <Activities activities={parkData.activities} />
 

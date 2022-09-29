@@ -73,6 +73,11 @@ export const pageLimitList = [
   { value: 50, label: '50' },
 ];
 
+export const formatDate = (inputDate: string) => {
+  let date = new Date(inputDate);
+  return date.toLocaleDateString();
+};
+
 export const sortActivitiesByName = (activities: IParkActivity[]) => {
   return activities.sort((a, b) => {
     var nameA = a.name.toUpperCase(); // ignore upper and lowercase

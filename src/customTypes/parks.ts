@@ -56,7 +56,7 @@ export interface IParkHours {
   sunday: string;
 }
 
-interface IParkOperatingHours {
+export interface IParkOperatingHours {
   description: string;
   exceptions: {
     endDate: string;
