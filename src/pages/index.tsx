@@ -188,7 +188,6 @@ const Home: NextPage<IProps> = ({ parks }) => {
     }
 
     if (parkNameQuery) {
-      console.log("this ran");
       filteredParks = filteredParks.filter((park) => {
         return park.fullname.toLowerCase().includes(parkNameQuery.toLowerCase());
       });
@@ -221,7 +220,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               onChange={handleParkNameChange}
               className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
-              placeholder="Albuquerque"
+              placeholder="Search Park Name"
             />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
