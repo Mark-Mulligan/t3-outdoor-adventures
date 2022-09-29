@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
 
 // Next
 import type { NextPage, NextPageContext } from "next";
@@ -8,6 +8,9 @@ import Head from "next/head";
 
 // Prisma
 import { prisma } from "../server/db/client";
+
+// Lodash
+import debounce from "lodash/debounce";
 
 // React Select
 import { MultiValue } from "react-select";
@@ -58,8 +61,30 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [totalPages, setTotalPages] = useState(47);
   const [totalResults, setTotalResults] = useState(463);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
+  const [parkName, setParkName] = useState("");
+  const [parkNameQuery, setParkNameQuery] = useState("");
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((val: string) => {
+        if (!val) {
+          router.push({ pathname: "/", query: removeQueryKey(router, "q") }, undefined, { shallow: true });
+          return;
+        }
+
+        router.push({ pathname: "/", query: createQueryObject(router, "q", val) }, undefined, {
+          shallow: true,
+        });
+      }, 750),
+    [router]
+  );
+
+  const handleParkNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setParkName(e.target.value);
+    debouncedSearch(e.target.value);
+  };
 
   const handleSelectChange = (newValue: MultiValue<SelectOption>, queryKey: string) => {
     const values = newValue.map((option) => {
@@ -97,6 +122,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
   useEffect(() => {
     const queryPage = router.query.page || "";
     const queryLimit = router.query.limit || "";
+    const queryParkName = router.query.q || "";
     const queryStates = router.query.states || "";
     const queryDesignations = router.query.designation || "";
 
@@ -106,6 +132,12 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
     if (queryLimit) {
       setLimit(Number(queryLimit));
+    }
+
+    if (queryParkName && typeof queryParkName === "string") {
+      setParkNameQuery(queryParkName);
+    } else {
+      setParkNameQuery("");
     }
 
     if (queryStates && typeof queryStates === "string") {
@@ -153,12 +185,19 @@ const Home: NextPage<IProps> = ({ parks }) => {
       });
     }
 
+    if (parkNameQuery) {
+      console.log("this ran");
+      filteredParks = filteredParks.filter((park) => {
+        return park.fullname.toLowerCase().includes(parkNameQuery.toLowerCase());
+      });
+    }
+
     console.log(filteredParks);
 
     setParkResults(filteredParks.slice(offset, endIndex));
     setTotalResults(filteredParks.length);
     setTotalPages(Math.ceil(filteredParks.length / limit));
-  }, [page, limit, parks, selectedStates]);
+  }, [page, limit, parks, selectedStates, parkNameQuery]);
 
   return (
     <>
@@ -176,6 +215,8 @@ const Home: NextPage<IProps> = ({ parks }) => {
             </label>
             <input
               style={{ outline: "none" }}
+              value={parkName}
+              onChange={handleParkNameChange}
               className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
               placeholder="Albuquerque"
