@@ -1,22 +1,23 @@
 // Next
-import type { NextPage, NextPageContext } from 'next';
-import Head from 'next/head';
+import type { NextPage, NextPageContext } from "next";
+import Head from "next/head";
 
 // axios
-import axios from 'axios';
+import axios from "axios";
 
 // UUID
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // Components
-import ParkInfoSection from '../../components/ParkInfoSection';
-import ParkHours from '../../components/ParkSections/ParkHours';
-import Activities from '../../components/ParkSections/Activities';
-import Map from '../../components/Map';
-import Contact from '../../components/ParkSections/Contact';
+import ParkInfoSection from "../../components/ParkInfoSection";
+import ParkHours from "../../components/ParkSections/ParkHours";
+import Activities from "../../components/ParkSections/Activities";
+import Map from "../../components/Map";
+import Contact from "../../components/ParkSections/Contact";
+import Photos from "../../components/ParkSections/Photos";
 
 // Custom Types
-import { IParkDataResponse, IParkData } from '../../customTypes/parks';
+import { IParkDataResponse, IParkData } from "../../customTypes/parks";
 
 interface IProps {
   parkData: IParkData;
@@ -62,6 +63,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
         </ParkInfoSection>
 
         <Contact contacts={parkData.contacts} url={parkData.url} />
+        <Photos images={parkData.images} />
       </main>
     </>
   );
@@ -70,13 +72,13 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
 export async function getServerSideProps(context: NextPageContext) {
   const parkCode = context.query.parkcode;
 
-  if (typeof parkCode !== 'string') {
+  if (typeof parkCode !== "string") {
     return;
   }
 
   try {
     const { data } = await axios.get<IParkDataResponse>(
-      `https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${process.env.NATIONAL_PARKS_APIKEY}`,
+      `https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${process.env.NATIONAL_PARKS_APIKEY}`
     );
 
     return {

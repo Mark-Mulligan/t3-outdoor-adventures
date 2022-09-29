@@ -136,8 +136,10 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
     if (queryParkName && typeof queryParkName === "string") {
       setParkNameQuery(queryParkName);
+      setParkName(queryParkName);
     } else {
       setParkNameQuery("");
+      setParkName("");
     }
 
     if (queryStates && typeof queryStates === "string") {

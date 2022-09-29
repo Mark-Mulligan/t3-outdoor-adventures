@@ -22,7 +22,7 @@ export interface IParkContacts {
     description: string;
     extension: string;
     phoneNumber: string;
-    type: 'Voice' | 'Fax';
+    type: "Voice" | "Fax";
   }[];
 }
 
@@ -38,7 +38,7 @@ interface IParkEntrancePass {
   title: string;
 }
 
-interface IParkImage {
+export interface IParkImage {
   altText: string;
   caption: string;
   credit: string;
