@@ -1,26 +1,26 @@
 // React
-import { FC } from 'react';
+import { FC } from "react";
 
 // UUID
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // Components
-import ParkInfoSection from '../ParkInfoSection';
+import ParkInfoSection from "../ParkInfoSection";
 
 // Custom Types
-import { IParkOperatingHours, IParkHours } from '../../customTypes/parks';
+import { IParkOperatingHours, IParkHours } from "../../customTypes/parks";
 
 // Utils
-import { formatDate } from '../../utils/util';
+import { formatDate } from "../../utils/util";
 
 const hoursAccessKeys: { key: keyof IParkHours; label: string }[] = [
-  { key: 'monday', label: 'Mon' },
-  { key: 'tuesday', label: 'Tue' },
-  { key: 'wednesday', label: 'Wed' },
-  { key: 'thursday', label: 'Thu' },
-  { key: 'friday', label: 'Fri' },
-  { key: 'saturday', label: 'Sat' },
-  { key: 'sunday', label: 'Sun' },
+  { key: "monday", label: "Mon" },
+  { key: "tuesday", label: "Tue" },
+  { key: "wednesday", label: "Wed" },
+  { key: "thursday", label: "Thu" },
+  { key: "friday", label: "Fri" },
+  { key: "saturday", label: "Sat" },
+  { key: "sunday", label: "Sun" },
 ];
 
 const formatStartAndEndDate = (startDate: string, endDate: string) => {
@@ -78,9 +78,11 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
                     })}
                   </ul>
                 </div>
+
                 <div>
                   <h4 className="text-white text-lg mb-3">Holiday Hours</h4>
                   <ul>
+                    {hoursData.exceptions.length === 0 && <li>N/A</li>}
                     {hoursData.exceptions.map((exception) => {
                       const exceptionHours = exception.exceptionHours;
 
