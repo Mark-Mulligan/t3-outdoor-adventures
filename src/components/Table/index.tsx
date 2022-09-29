@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import Link from 'next/link';
+import { FC } from "react";
+import { v4 as uuidv4 } from "uuid";
+import Link from "next/link";
 
 interface TableColumn<T> {
   field: keyof T;
@@ -19,7 +19,7 @@ interface objectWithParkcode extends Object {
 const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
   return (
     <div className="overflow-x-auto relative">
-      <table className="w-full text-sm text-left text-gray-300">
+      <table className="w-full text-sm text-left text-gray-300" style={{ minWidth: 550 }}>
         <thead className="text-xs uppercase bg-gray-700">
           <tr>
             {columns.map((column) => {

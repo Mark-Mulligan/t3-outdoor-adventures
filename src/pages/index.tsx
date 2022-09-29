@@ -208,7 +208,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto">
+      <main className="container mx-auto px-4">
         <div className="flex flex-wrap -mx-3 pt-5 pb-5">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-city">

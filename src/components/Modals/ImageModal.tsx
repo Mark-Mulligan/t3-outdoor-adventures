@@ -1,12 +1,20 @@
 // React
 import { FC, Dispatch, SetStateAction } from "react";
 
+// Custom Types
+import { IParkImage } from "../../customTypes/parks";
+
 interface IProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  parkImg: IParkImage | undefined;
 }
 
-const ImageModal: FC<IProps> = ({ showModal, setShowModal }) => {
+const ImageModal: FC<IProps> = ({ showModal, setShowModal, parkImg }) => {
+  if (!parkImg) {
+    return null;
+  }
+
   return (
     <div
       id="large-modal"
