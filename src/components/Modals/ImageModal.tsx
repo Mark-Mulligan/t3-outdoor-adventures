@@ -23,6 +23,20 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
     return null;
   }
 
+  const handleCarouselClick = (action: 'next' | 'previous') => {
+    let newValue = 0;
+
+    if (action === 'next') {
+      newValue = selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1;
+    }
+
+    if (action === 'previous') {
+      newValue = selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1;
+    }
+
+    setSelectedImageIndex(newValue);
+  };
+
   return (
     <div
       id="large-modal"
@@ -63,9 +77,13 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
               <div
                 key={uuidv4()}
                 className={`${selectedImageIndex === index ? '' : 'hidden'} duration-700 ease-in-out`}
-                style={{ maxWidth: 900, maxHeight: '60%', margin: 'auto' }}
               >
-                <img src={image.url} className="" alt={image.altText} />
+                <img
+                  src={image.url}
+                  className=""
+                  alt={image.altText}
+                  style={{ maxHeight: '30vw', maxWidth: 900, margin: 'auto' }}
+                />
               </div>
             );
           })}
@@ -75,6 +93,7 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
           <button
             type="button"
             className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+            onClick={() => handleCarouselClick('previous')}
           >
             <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-800 hover:text-white">
               <svg
@@ -93,7 +112,7 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
           <button
             type="button"
             className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            data-carousel-next
+            onClick={() => handleCarouselClick('next')}
           >
             <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-800 hover:text-white">
               <svg
