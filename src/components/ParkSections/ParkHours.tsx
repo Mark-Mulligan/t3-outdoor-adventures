@@ -1,26 +1,26 @@
 // React
-import { FC } from "react";
+import { FC } from 'react';
 
 // UUID
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
-import ParkInfoSection from "../ParkInfoSection";
+import ParkInfoSection from '../ParkInfoSection';
 
 // Custom Types
-import { IParkOperatingHours, IParkHours } from "../../customTypes/parks";
+import { IParkOperatingHours, IParkHours } from '../../customTypes/parks';
 
 // Utils
-import { formatDate } from "../../utils/util";
+import { formatDate } from '../../utils/util';
 
 const hoursAccessKeys: { key: keyof IParkHours; label: string }[] = [
-  { key: "monday", label: "Mon" },
-  { key: "tuesday", label: "Tue" },
-  { key: "wednesday", label: "Wed" },
-  { key: "thursday", label: "Thu" },
-  { key: "friday", label: "Fri" },
-  { key: "saturday", label: "Sat" },
-  { key: "sunday", label: "Sun" },
+  { key: 'monday', label: 'Mon' },
+  { key: 'tuesday', label: 'Tue' },
+  { key: 'wednesday', label: 'Wed' },
+  { key: 'thursday', label: 'Thu' },
+  { key: 'friday', label: 'Fri' },
+  { key: 'saturday', label: 'Sat' },
+  { key: 'sunday', label: 'Sun' },
 ];
 
 const formatStartAndEndDate = (startDate: string, endDate: string) => {
@@ -64,8 +64,8 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
             <li key={uuidv4()} className="mb-6">
               <h3 className="text-white text-2xl mb-2">{hoursData.name}</h3>
               <p className="mb-2">{hoursData.description}</p>
-              <div className="grid grid-cols-2">
-                <div>
+              <div className="grid xs:grid-cols-2 grid-col-1">
+                <div className="mb-4">
                   <h4 className="text-white text-lg mb-3">Standard Hours</h4>
                   <ul>
                     {hoursAccessKeys.map((accessKey) => {

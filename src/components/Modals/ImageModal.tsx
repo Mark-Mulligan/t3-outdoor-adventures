@@ -41,11 +41,11 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
     <div
       id="large-modal"
       tabIndex={-1}
-      className={`overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full bg-black/70 ${
+      className={`overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-full bg-black/80 ${
         showModal ? '' : 'hidden'
       }`}
     >
-      <div className="pt-10">
+      <div className="py-14">
         <button
           onClick={() => setShowModal(false)}
           type="button"
@@ -76,13 +76,18 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
             return (
               <div
                 key={uuidv4()}
-                className={`${selectedImageIndex === index ? '' : 'hidden'} duration-700 ease-in-out`}
+                className={`${
+                  selectedImageIndex === index ? '' : 'hidden'
+                } duration-700 ease-in-out max-w-[900px] m-auto`}
               >
-                <img
+                <Image
                   src={image.url}
-                  className=""
                   alt={image.altText}
-                  style={{ maxHeight: '30vw', maxWidth: 900, margin: 'auto' }}
+                  className="lg:max-h-[500px] max-h-[400px] h-auto w-full"
+                  objectFit="contain"
+                  height={300}
+                  width={500}
+                  layout="responsive"
                 />
               </div>
             );
@@ -129,8 +134,8 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
             </span>
           </button>
 
-          <p className="px-20 text-center">{images[selectedImageIndex]?.caption}</p>
-          <p className="px-20 text-center italic">
+          <p className="px-16 text-center">{images[selectedImageIndex]?.caption}</p>
+          <p className="px-16 text-center italic">
             Photo {selectedImageIndex + 1} of {images.length}
           </p>
         </div>
