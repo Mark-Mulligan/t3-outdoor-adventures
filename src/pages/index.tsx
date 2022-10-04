@@ -1,28 +1,29 @@
 // React
-import React, { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
 
 // Next
-import type { NextPage, NextPageContext } from "next";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import type { NextPage, NextPageContext } from 'next';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Image from 'next/image';
 
 // Prisma
-import { prisma } from "../server/db/client";
+import { prisma } from '../server/db/client';
 
 // Lodash
-import debounce from "lodash/debounce";
+import debounce from 'lodash/debounce';
 
 // React Select
-import { MultiValue } from "react-select";
+import { MultiValue } from 'react-select';
 
 // Components
-import Table from "../components/Table";
-import Pagination from "../components/Pagination";
-import MultiSelect from "../components/MultiSelect";
+import Table from '../components/Table';
+import Pagination from '../components/Pagination';
+import MultiSelect from '../components/MultiSelect';
 
 // Utils
-import { stateList, designationList } from "../utils/util";
-import { createQueryObject, removeQueryKey } from "../utils/routing";
+import { stateList, designationList } from '../utils/util';
+import { createQueryObject, removeQueryKey } from '../utils/routing';
 
 interface ParkData {
   id: string;
@@ -47,10 +48,10 @@ interface SelectOption {
 }
 
 const columns: TableColumn<ParkData>[] = [
-  { field: "fullname", headerName: "Park Name" },
-  { field: "parkcode", headerName: "Park Code" },
-  { field: "states", headerName: "State(s)" },
-  { field: "designation", headerName: "Designation" },
+  { field: 'fullname', headerName: 'Park Name' },
+  { field: 'parkcode', headerName: 'Park Code' },
+  { field: 'states', headerName: 'State(s)' },
+  { field: 'designation', headerName: 'Designation' },
 ];
 
 const Home: NextPage<IProps> = ({ parks }) => {
@@ -61,8 +62,8 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [totalPages, setTotalPages] = useState(47);
   const [totalResults, setTotalResults] = useState(463);
   const [parkResults, setParkResults] = useState<ParkData[]>([]);
-  const [parkName, setParkName] = useState("");
-  const [parkNameQuery, setParkNameQuery] = useState("");
+  const [parkName, setParkName] = useState('');
+  const [parkNameQuery, setParkNameQuery] = useState('');
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
 
@@ -70,15 +71,15 @@ const Home: NextPage<IProps> = ({ parks }) => {
     () =>
       debounce((val: string) => {
         if (!val) {
-          router.push({ pathname: "/", query: removeQueryKey(router, "q") }, undefined, { shallow: true });
+          router.push({ pathname: '/', query: removeQueryKey(router, 'q') }, undefined, { shallow: true });
           return;
         }
 
-        router.push({ pathname: "/", query: createQueryObject(router, "q", val) }, undefined, {
+        router.push({ pathname: '/', query: createQueryObject(router, 'q', val) }, undefined, {
           shallow: true,
         });
       }, 750),
-    [router]
+    [router],
   );
 
   const handleParkNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,14 +91,14 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const values = newValue.map((option) => {
       return option.value;
     });
-    const valueAsStr = values.join(",");
+    const valueAsStr = values.join(',');
 
     if (!valueAsStr) {
-      router.push({ pathname: "/", query: removeQueryKey(router, queryKey) }, undefined, { shallow: true });
+      router.push({ pathname: '/', query: removeQueryKey(router, queryKey) }, undefined, { shallow: true });
       return;
     }
 
-    router.push({ pathname: "/", query: createQueryObject(router, queryKey, valueAsStr) }, undefined, {
+    router.push({ pathname: '/', query: createQueryObject(router, queryKey, valueAsStr) }, undefined, {
       shallow: true,
     });
   };
@@ -105,9 +106,9 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const getSelectValuesFromQuery = (
     queryString: string,
     selectOptions: SelectOption[],
-    setSelectedOptions: Dispatch<SetStateAction<MultiValue<SelectOption> | null>>
+    setSelectedOptions: Dispatch<SetStateAction<MultiValue<SelectOption> | null>>,
   ) => {
-    const values = queryString.split(",");
+    const values = queryString.split(',');
     const result: SelectOption[] = [];
 
     selectOptions.forEach((option) => {
@@ -120,11 +121,11 @@ const Home: NextPage<IProps> = ({ parks }) => {
   };
 
   useEffect(() => {
-    const queryPage = router.query.page || "";
-    const queryLimit = router.query.limit || "";
-    const queryParkName = router.query.q || "";
-    const queryStates = router.query.states || "";
-    const queryDesignations = router.query.designation || "";
+    const queryPage = router.query.page || '';
+    const queryLimit = router.query.limit || '';
+    const queryParkName = router.query.q || '';
+    const queryStates = router.query.states || '';
+    const queryDesignations = router.query.designation || '';
 
     if (queryPage) {
       setPage(Number(queryPage));
@@ -134,21 +135,21 @@ const Home: NextPage<IProps> = ({ parks }) => {
       setLimit(Number(queryLimit));
     }
 
-    if (queryParkName && typeof queryParkName === "string") {
+    if (queryParkName && typeof queryParkName === 'string') {
       setParkNameQuery(queryParkName);
       setParkName(queryParkName);
     } else {
-      setParkNameQuery("");
-      setParkName("");
+      setParkNameQuery('');
+      setParkName('');
     }
 
-    if (queryStates && typeof queryStates === "string") {
+    if (queryStates && typeof queryStates === 'string') {
       getSelectValuesFromQuery(queryStates, stateList, setSelectedStates);
     } else {
       setSelectedStates(null);
     }
 
-    if (queryDesignations && typeof queryDesignations === "string") {
+    if (queryDesignations && typeof queryDesignations === 'string') {
       getSelectValuesFromQuery(queryDesignations, designationList, setSelectedDesignations);
     } else {
       setSelectedDesignations(null);
@@ -164,7 +165,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
       let selectedStatesValues = selectedStates.map((state) => state.value);
 
       filteredParks = filteredParks.filter((park) => {
-        const parkStatesArr = park.states.toLowerCase().split(",");
+        const parkStatesArr = park.states.toLowerCase().split(',');
 
         for (let i = 0; i < parkStatesArr.length; i++) {
           let stateValue = parkStatesArr[i];
@@ -208,48 +209,60 @@ const Home: NextPage<IProps> = ({ parks }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto px-4">
-        <div className="flex flex-wrap -mx-3 pt-5 pb-5">
-          <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-city">
-              Park Name
-            </label>
-            <input
-              style={{ outline: "none" }}
-              value={parkName}
-              onChange={handleParkNameChange}
-              className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              type="text"
-              placeholder="Search Park Name"
-            />
-          </div>
-          <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-state">
-              State
-            </label>
+      <div className="fixed h-full w-full">
+        <Image
+          layout="fill"
+          objectFit="cover"
+          style={{ position: 'fixed' }}
+          className="fixed h-full w-full"
+          src="/images/mountainForestMin.jpg"
+        />
+      </div>
 
-            <MultiSelect
-              id="statesSelect"
-              value={selectedStates}
-              options={stateList}
-              onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, "states")}
-            />
+      <main className="bg-slate-900/80 relative z-10 min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap -mx-3 pt-5 pb-5 relative z-10">
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-city">
+                Park Name
+              </label>
+              <input
+                style={{ outline: 'none' }}
+                value={parkName}
+                onChange={handleParkNameChange}
+                className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                type="text"
+                placeholder="Search Park Name"
+              />
+            </div>
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-state">
+                State
+              </label>
+
+              <MultiSelect
+                id="statesSelect"
+                value={selectedStates}
+                options={stateList}
+                onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, 'states')}
+              />
+            </div>
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-zip">
+                Designation
+              </label>
+              <MultiSelect
+                id="designationSelect"
+                value={selectedDesignations}
+                options={designationList}
+                onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, 'designation')}
+              />
+            </div>
           </div>
-          <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-zip">
-              Designation
-            </label>
-            <MultiSelect
-              id="designationSelect"
-              value={selectedDesignations}
-              options={designationList}
-              onChange={(newValue: MultiValue<SelectOption>) => handleSelectChange(newValue, "designation")}
-            />
-          </div>
+
+          <Table<ParkData> rows={parkResults} columns={columns} />
+          <Pagination page={page} limit={limit} totalPages={totalPages} totalResults={totalResults} />
         </div>
-
-        <Table<ParkData> rows={parkResults} columns={columns} />
-        <Pagination page={page} limit={limit} totalPages={totalPages} totalResults={totalResults} />
       </main>
     </>
   );
@@ -263,7 +276,7 @@ export async function getStaticProps(context: NextPageContext) {
 
     // Adding a space to the listed states so they fit better in the table
     const formattedParks = parks.map((park) => {
-      let statesValueFormatted = park.states.split(",").join(", ");
+      let statesValueFormatted = park.states.split(',').join(', ');
       return { ...park, states: statesValueFormatted };
     });
 

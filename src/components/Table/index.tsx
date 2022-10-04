@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Link from "next/link";
+import { FC } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import Link from 'next/link';
 
 interface TableColumn<T> {
   field: keyof T;
@@ -35,7 +35,7 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
           {rows.map((row) => {
             return (
               <Link key={uuidv4()} href={`/park/${row.parkcode}`}>
-                <tr className="border-b bg-gray-800 border-gray-700">
+                <tr className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-600/50">
                   {columns.map((column) => {
                     const data: any = row[column.field];
                     return (
