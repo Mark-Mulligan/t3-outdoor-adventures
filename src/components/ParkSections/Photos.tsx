@@ -28,7 +28,7 @@ const Photos: FC<IProps> = ({ images }) => {
   };
 
   return (
-    <ParkInfoSection title="Photos">
+    <ParkInfoSection id="photos" title="Photos">
       <ul className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
         {images.map((image, index) => {
           return (

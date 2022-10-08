@@ -57,7 +57,7 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
   };
 
   return (
-    <ParkInfoSection title="Operating Hours">
+    <ParkInfoSection id="hours" title="Operating Hours">
       <ul>
         {operatingHours.map((hoursData) => {
           return (

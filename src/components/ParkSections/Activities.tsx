@@ -53,7 +53,11 @@ const Activities: FC<IProps> = ({ activities }) => {
     );
   };
 
-  return <ParkInfoSection title="Activities">{renderActivities()}</ParkInfoSection>;
+  return (
+    <ParkInfoSection id="activities" title="Activities">
+      {renderActivities()}
+    </ParkInfoSection>
+  );
 };
 
 export default Activities;

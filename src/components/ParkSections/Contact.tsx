@@ -20,7 +20,7 @@ interface IProps {
 
 const Contact: FC<IProps> = ({ contacts, url }) => {
   return (
-    <ParkInfoSection title="Contact Info">
+    <ParkInfoSection id="contact-info" title="Contact Info">
       <ul>
         {contacts.phoneNumbers.map((phoneNum) => {
           if (phoneNum.type === 'Voice') {

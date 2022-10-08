@@ -1,14 +1,15 @@
 // React
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 interface IProps {
   children: ReactNode;
   title: string;
+  id: string;
 }
 
-const ParkSection: FC<IProps> = ({ title, children }) => {
+const ParkSection: FC<IProps> = ({ title, id, children }) => {
   return (
-    <section className="mb-8">
+    <section className="mb-8" id={id}>
       <h2 className="text-3xl text-white">{title}</h2>
       <hr className="my-5 h-px border-0 bg-gray-700" />
       {children}
