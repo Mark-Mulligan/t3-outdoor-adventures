@@ -8,6 +8,9 @@ import { useRouter } from 'next/router';
 // UUID
 import { v4 as uuidv4 } from 'uuid';
 
+// Components
+import SortArrow from './SortArrow';
+
 // Utils
 import { removeQueryKey, createQueryObject } from '../../utils/routing';
 
@@ -70,10 +73,13 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
               return (
                 <th
                   key={uuidv4()}
-                  className="px-5 py-3"
+                  className="px-5 py-3 cursor-pointer"
                   onClick={() => handleColumnHeaderClick(column.field.toString())}
                 >
-                  {column.headerName}
+                  <div className="flex">
+                    <span className="mr-1">{column.headerName}</span>
+                    <SortArrow router={router} columnHeader={column.field.toString()} />
+                  </div>
                 </th>
               );
             })}
