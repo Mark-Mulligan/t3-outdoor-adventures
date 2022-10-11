@@ -36,8 +36,6 @@ interface IProps {
 }
 
 const ParkHours: FC<IProps> = ({ operatingHours }) => {
-  console.log(operatingHours);
-
   const renderExceptionHours = (exceptionHours: any) => {
     if (Object.keys(exceptionHours).length > 0) {
       return (
@@ -63,8 +61,8 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
           return (
             <li key={uuidv4()} className="mb-6">
               <h3 className="text-white text-2xl mb-2">{hoursData.name}</h3>
-              <p className="mb-2">{hoursData.description}</p>
-              <div className="grid xs:grid-cols-2 grid-col-1">
+              <p className="mb-4">{hoursData.description}</p>
+              <div className="grid md:grid-cols-2 grid-col-1">
                 <div className="mb-4">
                   <h4 className="text-white text-lg mb-3">Standard Hours</h4>
                   <ul>

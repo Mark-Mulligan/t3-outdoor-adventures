@@ -9,6 +9,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 // Components
+import ParkPageNav from '../../components/ParkPageNav';
 import ParkInfoSection from '../../components/ParkInfoSection';
 import ParkHours from '../../components/ParkSections/ParkHours';
 import Activities from '../../components/ParkSections/Activities';
@@ -18,16 +19,6 @@ import Photos from '../../components/ParkSections/Photos';
 
 // Custom Types
 import { IParkDataResponse, IParkData } from '../../customTypes/parks';
-
-const parkSideNavItems = [
-  { label: 'Description', id: 'description' },
-  { label: 'Entrance Fees', id: 'entrance-fees' },
-  { label: 'Hours', id: 'hours' },
-  { label: 'Activities', id: 'activities' },
-  { label: 'Location', id: 'location' },
-  { label: 'Contact Info', id: 'contact-info' },
-  { label: 'Photos', id: 'photos' },
-];
 
 interface IProps {
   parkData: IParkData;
@@ -43,18 +34,8 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex">
-        <nav className="flex-none w-[220px] text-gray-400 px-6 pt-6">
-          <ul className="fixed">
-            {parkSideNavItems.map((navItem) => {
-              return (
-                <li key={uuidv4()} className="py-2 text-xl cursor-pointer hover:text-white">
-                  <a href={`#${navItem.id}`}>{navItem.label}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-        <main className="flex-1 px-4 py-8 mx-auto text-gray-400">
+        <ParkPageNav />
+        <main className="flex-1 px-4 py-10 mx-auto text-gray-400">
           <h1 className="text-center mb-4 text-4xl text-white">{parkData.fullName}</h1>
 
           <ParkInfoSection id="description" title="Description">
