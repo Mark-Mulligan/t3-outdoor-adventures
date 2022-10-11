@@ -42,7 +42,7 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
         <ul>
           {hoursAccessKeys.map((accessKey) => {
             return (
-              <li className="flex">
+              <li className="flex font-light">
                 <span className="w-14">{accessKey.label}</span> <span>{exceptionHours[accessKey.key]}</span>
               </li>
             );
@@ -60,15 +60,15 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
         {operatingHours.map((hoursData) => {
           return (
             <li key={uuidv4()} className="mb-6">
-              <h3 className="text-white text-2xl mb-2">{hoursData.name}</h3>
-              <p className="mb-4">{hoursData.description}</p>
+              <h3 className="font-semibold text-2xl mb-2">{hoursData.name}</h3>
+              <p className="mb-4 font-light">{hoursData.description}</p>
               <div className="grid md:grid-cols-2 grid-col-1">
                 <div className="mb-4">
-                  <h4 className="text-white text-lg mb-3">Standard Hours</h4>
+                  <h4 className="font-bold text-lg mb-3">Standard Hours</h4>
                   <ul>
                     {hoursAccessKeys.map((accessKey) => {
                       return (
-                        <li key={uuidv4()} className="flex">
+                        <li key={uuidv4()} className="flex font-light">
                           <span className="w-14">{accessKey.label}</span>
                           <span>{hoursData.standardHours[accessKey.key]}</span>
                         </li>
@@ -78,15 +78,15 @@ const ParkHours: FC<IProps> = ({ operatingHours }) => {
                 </div>
 
                 <div>
-                  <h4 className="text-white text-lg mb-3">Holiday Hours</h4>
+                  <h4 className="font-bold text-lg mb-3">Holiday Hours</h4>
                   <ul>
-                    {hoursData.exceptions.length === 0 && <li>N/A</li>}
+                    {hoursData.exceptions.length === 0 && <li className="font-light">N/A</li>}
                     {hoursData.exceptions.map((exception) => {
                       const exceptionHours = exception.exceptionHours;
 
                       return (
                         <li key={uuidv4()} className="mb-4">
-                          <h4 className="text-gray-300 italic">
+                          <h4 className="italic font-semibold">
                             {exception.name} ({formatStartAndEndDate(exception.startDate, exception.endDate)})
                           </h4>
 

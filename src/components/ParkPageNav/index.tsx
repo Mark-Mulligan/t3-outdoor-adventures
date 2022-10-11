@@ -21,8 +21,8 @@ const ParkPageNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="flex-none md:w-[220px] w-full text-gray-400 md:px-6 md:pt-6 px-0 pt-0 md:relative fixed z-10 overflow-hidden">
-      <div className="md:hidden relative flex justify-between px-3 py-3 z-20 bg-slate-800">
+    <nav className="flex-none md:w-[220px] w-full md:px-6 md:pt-6 px-0 pt-0 md:relative fixed z-10 overflow-hidden">
+      <div className="md:hidden relative flex justify-between px-3 py-3 z-20 bg-slate-300">
         <Link href="/">
           <span className="flex items-center">
             <svg
@@ -49,11 +49,11 @@ const ParkPageNav = () => {
         </svg>
       </div>
       <ul
-        className={`fixed md:top-5 md:h-auto md:pt-0 md:w-auto md:left-6 md:bg-inherit bg-slate-800 h-full top-0 pt-12 w-[220px] transition-all ${
+        className={`fixed md:top-5 md:h-auto md:pt-0 md:w-auto md:left-6 md:bg-inherit bg-slate-300 h-full top-0 pt-12 w-[220px] transition-all ${
           menuOpen ? 'left-[calc(100%-220px)]' : 'left-full'
         }`}
       >
-        <li className="py-2 text-xl cursor-pointer hover:text-white md:block hidden">
+        <li className="py-2 text-xl cursor-pointer hover:text-slate-600 md:block hidden">
           <Link href="/">
             <span className="flex items-center">
               <svg
@@ -72,7 +72,7 @@ const ParkPageNav = () => {
         <hr className="my-2 h-px border-0 bg-gray-700 md:block hidden" />
         {parkSideNavItems.map((navItem) => {
           return (
-            <li key={uuidv4()} className="md:px-0 px-4 py-2 text-xl cursor-pointer hover:text-white">
+            <li key={uuidv4()} className="md:px-0 px-4 py-2 text-xl cursor-pointer hover:text-slate-600">
               <a href={`#${navItem.id}`}>{navItem.label}</a>
             </li>
           );

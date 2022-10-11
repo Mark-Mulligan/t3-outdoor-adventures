@@ -209,8 +209,6 @@ const Home: NextPage<IProps> = ({ parks }) => {
       filteredParks = sortParks(filteredParks, sorting.column, sorting.order);
     }
 
-    console.log(filteredParks);
-
     setParkResults(filteredParks.slice(offset, endIndex));
     setTotalResults(filteredParks.length);
     setTotalPages(Math.ceil(filteredParks.length / limit));
@@ -225,16 +223,10 @@ const Home: NextPage<IProps> = ({ parks }) => {
       </Head>
 
       <div className="fixed h-full w-full">
-        <Image
-          layout="fill"
-          objectFit="cover"
-          style={{ position: 'fixed' }}
-          className="fixed h-full w-full"
-          src="/images/mountainForestMin.jpg"
-        />
+        <Image layout="fill" objectFit="cover" className="fixed h-full w-full" src="/images/mountainForestMin.jpg" />
       </div>
 
-      <main className="bg-slate-900/80 relative z-10 min-h-screen">
+      <main className="relative z-10 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap -mx-3 pt-5 pb-5 relative z-10">
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">

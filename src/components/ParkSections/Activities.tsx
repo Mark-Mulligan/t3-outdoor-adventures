@@ -38,7 +38,7 @@ const Activities: FC<IProps> = ({ activities }) => {
     const column2Acts = sortedActivities.slice(midPoint);
 
     return (
-      <ul className="grid md:grid-cols-2 grid-col-1">
+      <ul className="grid md:grid-cols-2 grid-col-1 font-light">
         <div>
           {column1Acts.map((activity) => (
             <li key={uuidv4()}>{activity.name}</li>

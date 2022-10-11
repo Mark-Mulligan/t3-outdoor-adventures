@@ -66,8 +66,8 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
 
   return (
     <div className="overflow-x-auto relative">
-      <table className="w-full text-sm text-left text-gray-300" style={{ minWidth: 550 }}>
-        <thead className="text-xs uppercase bg-gray-700">
+      <table className="w-full text-sm text-left" style={{ minWidth: 550 }}>
+        <thead className="text-xs uppercase bg-gray-400/80">
           <tr>
             {columns.map((column) => {
               return (
@@ -86,10 +86,10 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => {
+          {rows.map((row, index) => {
             return (
               <Link key={uuidv4()} href={`/park/${row.parkcode}`}>
-                <tr className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-600/50">
+                <tr className={`border-b border-gray-500 bg-gray-300/80 cursor-pointer hover:bg-gray-300`}>
                   {columns.map((column) => {
                     const data: any = row[column.field];
                     return (

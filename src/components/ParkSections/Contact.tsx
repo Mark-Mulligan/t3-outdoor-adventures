@@ -27,7 +27,8 @@ const Contact: FC<IProps> = ({ contacts, url }) => {
             return (
               <li key={uuidv4()}>
                 <p>
-                  <span className="text-white">Phone:</span> {formatPhoneNum(phoneNum.phoneNumber)}
+                  <span className="font-bold">Phone:</span>{' '}
+                  <span className="font-light">{formatPhoneNum(phoneNum.phoneNumber)}</span>
                 </p>
                 {phoneNum.extension && <p>Extension: {phoneNum.extension}</p>}
                 {phoneNum.description && <p>Description: {phoneNum.description}</p>}
@@ -38,7 +39,7 @@ const Contact: FC<IProps> = ({ contacts, url }) => {
           return (
             <li key={uuidv4()}>
               <p>
-                <span className="text-white">Fax:</span> {formatPhoneNum(phoneNum.phoneNumber)}
+                <span className="font-bold">Fax:</span> {formatPhoneNum(phoneNum.phoneNumber)}
               </p>
               {phoneNum.extension && <p>Extension: {phoneNum.extension}</p>}
               {phoneNum.description && <p>Description: {phoneNum.description}</p>}
@@ -47,8 +48,8 @@ const Contact: FC<IProps> = ({ contacts, url }) => {
         })}
 
         <li>
-          <span className="text-white">Website:</span>{' '}
-          <a href={url} target="_blank">
+          <span className="font-bold">Website:</span>{' '}
+          <a href={url} target="_blank" className="font-light">
             {url}
           </a>
         </li>
