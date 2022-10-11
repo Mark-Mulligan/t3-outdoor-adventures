@@ -35,7 +35,7 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
       </Head>
       <div className="flex">
         <ParkPageNav />
-        <main className="flex-1 px-4 py-10 mx-auto text-gray-400">
+        <main className="flex-1 px-4 md:pt-10 pb-10 pt-14 mx-auto text-gray-400">
           <h1 className="text-center mb-4 text-4xl text-white">{parkData.fullName}</h1>
 
           <ParkInfoSection id="description" title="Description">

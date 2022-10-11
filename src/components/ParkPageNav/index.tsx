@@ -1,3 +1,6 @@
+// React
+import { useState } from 'react';
+
 // Next
 import Link from 'next/link';
 
@@ -15,9 +18,11 @@ const parkSideNavItems = [
 ];
 
 const ParkPageNav = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className="flex-none md:w-[220px] w-full text-gray-400 md:px-6 md:pt-6 px-3 pt-3 md:relative fixed">
-      <div className="md:hidden relative flex justify-between">
+    <nav className="flex-none md:w-[220px] w-full text-gray-400 md:px-6 md:pt-6 px-0 pt-0 md:relative fixed z-10 overflow-hidden">
+      <div className="md:hidden relative flex justify-between px-3 py-3 z-20 bg-slate-800">
         <Link href="/">
           <span className="flex items-center">
             <svg
@@ -33,6 +38,7 @@ const ParkPageNav = () => {
           </span>
         </Link>
         <svg
+          onClick={() => setMenuOpen(!menuOpen)}
           className="w-6 h-6"
           fill="none"
           stroke="currentColor"
@@ -42,8 +48,12 @@ const ParkPageNav = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </div>
-      <ul className="md:fixed static">
-        <li className="py-2 text-xl cursor-pointer hover:text-white">
+      <ul
+        className={`fixed md:top-5 md:h-auto md:pt-0 md:w-auto md:left-6 md:bg-inherit bg-slate-800 h-full top-0 pt-12 w-[220px] transition-all ${
+          menuOpen ? 'left-[calc(100%-220px)]' : 'left-full'
+        }`}
+      >
+        <li className="py-2 text-xl cursor-pointer hover:text-white md:block hidden">
           <Link href="/">
             <span className="flex items-center">
               <svg
@@ -59,10 +69,10 @@ const ParkPageNav = () => {
             </span>
           </Link>
         </li>
-        <hr className="my-2 h-px border-0 bg-gray-700"></hr>
+        <hr className="my-2 h-px border-0 bg-gray-700 md:block hidden" />
         {parkSideNavItems.map((navItem) => {
           return (
-            <li key={uuidv4()} className="py-2 text-xl cursor-pointer hover:text-white">
+            <li key={uuidv4()} className="md:px-0 px-4 py-2 text-xl cursor-pointer hover:text-white">
               <a href={`#${navItem.id}`}>{navItem.label}</a>
             </li>
           );
