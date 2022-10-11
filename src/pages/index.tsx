@@ -21,20 +21,21 @@ import Table from '../components/Table';
 import Pagination from '../components/Pagination';
 import MultiSelect from '../components/MultiSelect';
 
+// Types
+import { ParkTableData } from '../customTypes/parks';
+
 // Utils
 import { stateList, designationList } from '../utils/util';
 import { createQueryObject, removeQueryKey } from '../utils/routing';
+import { sortParks } from '../utils/sorting-filtering';
 
-interface ParkData {
-  id: string;
-  fullname: string;
-  parkcode: string;
-  states: string;
-  designation: string;
+interface sortObj {
+  column: keyof ParkTableData | null;
+  order: 'asc' | 'desc' | null;
 }
 
 interface IProps {
-  parks: ParkData[];
+  parks: ParkTableData[];
 }
 
 interface TableColumn<T> {
@@ -47,7 +48,7 @@ interface SelectOption {
   label: string;
 }
 
-const columns: TableColumn<ParkData>[] = [
+const columns: TableColumn<ParkTableData>[] = [
   { field: 'fullname', headerName: 'Park Name' },
   { field: 'parkcode', headerName: 'Park Code' },
   { field: 'states', headerName: 'State(s)' },
@@ -61,11 +62,12 @@ const Home: NextPage<IProps> = ({ parks }) => {
   const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(47);
   const [totalResults, setTotalResults] = useState(463);
-  const [parkResults, setParkResults] = useState<ParkData[]>([]);
+  const [parkResults, setParkResults] = useState<ParkTableData[]>([]);
   const [parkName, setParkName] = useState('');
   const [parkNameQuery, setParkNameQuery] = useState('');
   const [selectedStates, setSelectedStates] = useState<MultiValue<SelectOption> | null>(null);
   const [selectedDesignations, setSelectedDesignations] = useState<MultiValue<SelectOption> | null>(null);
+  const [sorting, setSorting] = useState<sortObj>({ column: null, order: null });
 
   const debouncedSearch = useMemo(
     () =>
@@ -126,6 +128,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const queryParkName = router.query.q || '';
     const queryStates = router.query.states || '';
     const queryDesignations = router.query.designation || '';
+    const sort = router.query.sort || '';
 
     if (queryPage) {
       setPage(Number(queryPage));
@@ -153,6 +156,14 @@ const Home: NextPage<IProps> = ({ parks }) => {
       getSelectValuesFromQuery(queryDesignations, designationList, setSelectedDesignations);
     } else {
       setSelectedDesignations(null);
+    }
+
+    if (sort && typeof sort === 'string') {
+      const column = sort.split('-')[0] as keyof ParkTableData;
+      const order = sort.split('-')[1] as 'asc' | 'desc';
+      setSorting({ column, order });
+    } else {
+      setSorting({ column: null, order: null });
     }
   }, [router.query]);
 
@@ -194,12 +205,16 @@ const Home: NextPage<IProps> = ({ parks }) => {
       });
     }
 
+    if (sorting.column && sorting.order) {
+      filteredParks = sortParks(filteredParks, sorting.column, sorting.order);
+    }
+
     console.log(filteredParks);
 
     setParkResults(filteredParks.slice(offset, endIndex));
     setTotalResults(filteredParks.length);
     setTotalPages(Math.ceil(filteredParks.length / limit));
-  }, [page, limit, parks, selectedStates, parkNameQuery]);
+  }, [page, limit, parks, selectedStates, parkNameQuery, sorting]);
 
   return (
     <>
@@ -260,7 +275,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
             </div>
           </div>
 
-          <Table<ParkData> rows={parkResults} columns={columns} />
+          <Table<ParkTableData> rows={parkResults} columns={columns} />
           <Pagination page={page} limit={limit} totalPages={totalPages} totalResults={totalResults} />
         </div>
       </main>

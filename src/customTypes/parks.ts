@@ -22,7 +22,7 @@ export interface IParkContacts {
     description: string;
     extension: string;
     phoneNumber: string;
-    type: "Voice" | "Fax";
+    type: 'Voice' | 'Fax';
   }[];
 }
 
@@ -103,4 +103,12 @@ export interface IParkDataResponse {
   limit: string;
   start: string;
   total: string;
+}
+
+export interface ParkTableData {
+  id: string;
+  fullname: string;
+  parkcode: string;
+  states: string;
+  designation: string;
 }
