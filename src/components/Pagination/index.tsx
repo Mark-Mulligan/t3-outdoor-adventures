@@ -64,7 +64,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         <div className="items-center flex justify-center mb-4">
           <div className="relative mr-2">
             <select
-              className="border text-sm rounded-lg block w-full p-2 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               id="grid-state"
               value={limit}
               onChange={(e) =>
@@ -78,18 +78,13 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
               <option>25</option>
               <option>50</option>
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
           </div>
           <p className="font-light">Results Per Page</p>
         </div>
       </div>
       <nav className="inline-flex items-center -space-x-px" aria-label="Pagination">
         <button
-          className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+          className="block xs:py-2 xs:px-3 px-2 py-2 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
           title="Previous Page"
           onClick={() =>
             router.push({ pathname: '/', query: createQueryObject('page', page - 1) }, undefined, { shallow: true })
@@ -99,7 +94,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           <span className="sr-only">Previous Page</span>
           <svg
             aria-hidden="true"
-            className="w-5 h-5"
+            className="s:w-5 xs:h-5 w-4 h-4 xs:m-0 m-[-0.5px]"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +108,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
         </button>
         {renderPageNumbers()}
         <button
-          className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+          className="block py-2 xs:px-3 px-2 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
           title="Next Page"
           onClick={() =>
             router.push({ pathname: '/', query: createQueryObject('page', page + 1) }, undefined, { shallow: true })
@@ -123,7 +118,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           <span className="sr-only">Next Page</span>
           <svg
             aria-hidden="true"
-            className="w-5 h-5"
+            className="xs:w-5 xs:h-5 w-4 h-4 xs:m-0 m-[-0.5px]"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"

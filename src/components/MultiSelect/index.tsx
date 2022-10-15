@@ -15,8 +15,8 @@ const customStyles: StylesConfig<SelectOption> = {
     borderRadius: '0.5rem',
     fontSize: '0.875rem',
     lineHeight: '1.25rem',
-    background: 'rgb(55, 65, 81)',
-    border: '1px solid rgb(75, 85, 99)',
+    background: 'background-color: rgb(249 250 251);',
+    border: '1px solid rgb(209 213 219);',
   }),
   multiValue: (provided) => {
     return {

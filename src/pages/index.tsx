@@ -226,11 +226,11 @@ const Home: NextPage<IProps> = ({ parks }) => {
         <Image layout="fill" objectFit="cover" className="fixed h-full w-full" src="/images/mountainForestMin.jpg" />
       </div>
 
-      <main className="relative z-10 min-h-screen">
-        <div className="container mx-auto px-4">
+      <main className="relative z-10 min-h-screen pb-6">
+        <div className="container mx-auto xs:px-4 px-2">
           <div className="flex flex-wrap -mx-3 pt-5 pb-5 relative z-10">
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-city">
+              <label className="block mb-2 text-sm font-medium text-gray-50" htmlFor="grid-city">
                 Park Name
               </label>
               <input
@@ -243,7 +243,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               />
             </div>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-state">
+              <label className="block mb-2 text-sm font-medium text-gray-50" htmlFor="grid-state">
                 State
               </label>
 
@@ -255,7 +255,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               />
             </div>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-zip">
+              <label className="block mb-2 text-sm font-medium text-gray-50" htmlFor="grid-zip">
                 Designation
               </label>
               <MultiSelect

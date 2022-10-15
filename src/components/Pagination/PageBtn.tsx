@@ -9,8 +9,8 @@ interface IProps {
   currentPage: number;
 }
 
-const nonActiveStlyes = `py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700`;
-const activeStyles = `z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700`;
+const nonActiveStlyes = `py-2 px-3 xs:text-sm text-xs leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700`;
+const activeStyles = `z-10 py-2 px-3 xs:text-sm text-xs leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700`;
 
 const PageBtn: FC<IProps> = ({ pageNumber, currentPage }) => {
   const router = useRouter();
