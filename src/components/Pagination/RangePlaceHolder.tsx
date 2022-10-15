@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 const RangePlaceHolder: FC = () => {
   return (
-    <div className="py-2 px-3 leading-tight border hover:bg-gray-700 hover:text-white bg-gray-800 border-gray-700 text-gray-400">
+    <div className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
       ...
     </div>
   );

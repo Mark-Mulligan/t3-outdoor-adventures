@@ -230,20 +230,20 @@ const Home: NextPage<IProps> = ({ parks }) => {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap -mx-3 pt-5 pb-5 relative z-10">
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-city">
+              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-city">
                 Park Name
               </label>
               <input
                 style={{ outline: 'none' }}
                 value={parkName}
                 onChange={handleParkNameChange}
-                className="bg-gray-700 border border-gray-600 text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 type="text"
                 placeholder="Search Park Name"
               />
             </div>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-state">
+              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-state">
                 State
               </label>
 
@@ -255,7 +255,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
               />
             </div>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="grid-zip">
+              <label className="block mb-2 text-sm font-medium text-gray-100" htmlFor="grid-zip">
                 Designation
               </label>
               <MultiSelect
