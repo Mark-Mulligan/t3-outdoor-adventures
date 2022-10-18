@@ -73,11 +73,11 @@ const Home: NextPage<IProps> = ({ parks }) => {
     () =>
       debounce((val: string) => {
         if (!val) {
-          router.push({ pathname: '/', query: removeQueryKey(router, 'q') }, undefined, { shallow: true });
+          router.push({ pathname: '/parks', query: removeQueryKey(router, 'q') }, undefined, { shallow: true });
           return;
         }
 
-        router.push({ pathname: '/', query: createQueryObject(router, 'q', val) }, undefined, {
+        router.push({ pathname: '/parks', query: createQueryObject(router, 'q', val) }, undefined, {
           shallow: true,
         });
       }, 750),
@@ -96,11 +96,11 @@ const Home: NextPage<IProps> = ({ parks }) => {
     const valueAsStr = values.join(',');
 
     if (!valueAsStr) {
-      router.push({ pathname: '/', query: removeQueryKey(router, queryKey) }, undefined, { shallow: true });
+      router.push({ pathname: '/parks', query: removeQueryKey(router, queryKey) }, undefined, { shallow: true });
       return;
     }
 
-    router.push({ pathname: '/', query: createQueryObject(router, queryKey, valueAsStr) }, undefined, {
+    router.push({ pathname: '/parks', query: createQueryObject(router, queryKey, valueAsStr) }, undefined, {
       shallow: true,
     });
   };
