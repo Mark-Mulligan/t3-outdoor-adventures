@@ -1,6 +1,3 @@
-// React
-import { useState } from 'react';
-
 //Next
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -35,7 +32,7 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
   const handleColumnHeaderClick = (columnHeader: string) => {
     let sortBy: string | undefined;
     let sortDirection: string | undefined = 'asc';
-    let sortStr = router?.query?.sort;
+    const sortStr = router?.query?.sort;
 
     if (sortStr && typeof sortStr === 'string') {
       sortBy = sortStr.split('-')[0];
@@ -86,7 +83,7 @@ const Table = <T extends objectWithParkcode>({ columns, rows }: IProps<T>) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => {
+          {rows.map((row) => {
             return (
               <Link key={uuidv4()} href={`/park/${row.parkcode}`}>
                 <tr className={`border-b border-gray-500 bg-gray-300/80 cursor-pointer hover:bg-gray-300`}>

@@ -1,5 +1,5 @@
 // React
-import { FC, Dispatch, SetStateAction } from 'react';
+import { FC } from 'react';
 
 // Next
 import { useRouter } from 'next/router';

@@ -60,7 +60,7 @@ export interface IParkOperatingHours {
   description: string;
   exceptions: {
     endDate: string;
-    exceptionHours: IParkHours | {};
+    exceptionHours: IParkHours | Record<string, never>;
     name: string;
     startDate: string;
   }[];

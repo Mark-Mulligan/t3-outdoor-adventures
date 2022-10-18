@@ -10,7 +10,7 @@ interface SelectOption {
 }
 
 const customStyles: StylesConfig<SelectOption> = {
-  control: (provided, state) => ({
+  control: (provided) => ({
     ...provided,
     borderRadius: '0.5rem',
     fontSize: '0.875rem',
@@ -36,14 +36,14 @@ const customStyles: StylesConfig<SelectOption> = {
     marginBottom: 5,
     color: '#a0aec0',
   }),
-  input: (provided, state) => ({
+  input: (provided) => ({
     ...provided,
     margin: 0,
     marginBottom: 5,
     padding: 0,
     color: 'white',
   }),
-  valueContainer: (provided, state) => ({
+  valueContainer: (provided) => ({
     ...provided,
     paddingTop: '0.63rem',
     paddingLeft: '0.625rem',

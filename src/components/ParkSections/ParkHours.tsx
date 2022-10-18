@@ -36,13 +36,13 @@ interface IProps {
 }
 
 const ParkHours: FC<IProps> = ({ operatingHours }) => {
-  const renderExceptionHours = (exceptionHours: any) => {
+  const renderExceptionHours = (exceptionHours: IParkHours | Record<string, never>) => {
     if (Object.keys(exceptionHours).length > 0) {
       return (
         <ul>
           {hoursAccessKeys.map((accessKey) => {
             return (
-              <li className="flex font-light">
+              <li className="flex font-light" key={uuidv4()}>
                 <span className="w-14">{accessKey.label}</span> <span>{exceptionHours[accessKey.key]}</span>
               </li>
             );

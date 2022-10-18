@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
 
 // Next
-import type { NextPage, NextPageContext } from 'next';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -173,13 +173,13 @@ const Home: NextPage<IProps> = ({ parks }) => {
     let filteredParks = [...parks];
 
     if (selectedStates && selectedStates.length > 0) {
-      let selectedStatesValues = selectedStates.map((state) => state.value);
+      const selectedStatesValues = selectedStates.map((state) => state.value);
 
       filteredParks = filteredParks.filter((park) => {
         const parkStatesArr = park.states.toLowerCase().split(',');
 
         for (let i = 0; i < parkStatesArr.length; i++) {
-          let stateValue = parkStatesArr[i];
+          const stateValue = parkStatesArr[i];
 
           if (stateValue && selectedStatesValues.includes(stateValue)) {
             return true;
@@ -191,7 +191,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     }
 
     if (selectedDesignations && selectedDesignations.length > 0) {
-      let selectedDesValues = selectedDesignations.map((des) => des.value);
+      const selectedDesValues = selectedDesignations.map((des) => des.value);
 
       filteredParks = filteredParks.filter((park) => {
         const parkDesignation = park.designation.toLowerCase();
@@ -212,7 +212,7 @@ const Home: NextPage<IProps> = ({ parks }) => {
     setParkResults(filteredParks.slice(offset, endIndex));
     setTotalResults(filteredParks.length);
     setTotalPages(Math.ceil(filteredParks.length / limit));
-  }, [page, limit, parks, selectedStates, parkNameQuery, sorting]);
+  }, [page, limit, parks, selectedStates, parkNameQuery, sorting, selectedDesignations]);
 
   return (
     <>
@@ -223,7 +223,13 @@ const Home: NextPage<IProps> = ({ parks }) => {
       </Head>
 
       <div className="fixed h-full w-full">
-        <Image layout="fill" objectFit="cover" className="fixed h-full w-full" src="/images/mountainForestMin.jpg" />
+        <Image
+          alt=""
+          layout="fill"
+          objectFit="cover"
+          className="fixed h-full w-full"
+          src="/images/mountainForestMin.jpg"
+        />
       </div>
 
       <main className="relative z-10 min-h-screen pb-6">
@@ -277,13 +283,13 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
 export default Home;
 
-export async function getStaticProps(context: NextPageContext) {
+export async function getStaticProps() {
   try {
     const parks = await prisma.nationalParksData.findMany();
 
     // Adding a space to the listed states so they fit better in the table
     const formattedParks = parks.map((park) => {
-      let statesValueFormatted = park.states.split(',').join(', ');
+      const statesValueFormatted = park.states.split(',').join(', ');
       return { ...park, states: statesValueFormatted };
     });
 

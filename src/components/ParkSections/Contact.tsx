@@ -49,7 +49,7 @@ const Contact: FC<IProps> = ({ contacts, url }) => {
 
         <li>
           <span className="font-bold">Website:</span>{' '}
-          <a href={url} target="_blank" className="font-light">
+          <a href={url} target="_blank" rel="noreferrer" className="font-light">
             {url}
           </a>
         </li>

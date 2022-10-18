@@ -74,14 +74,14 @@ export const pageLimitList = [
 ];
 
 export const formatDate = (inputDate: string) => {
-  let date = new Date(inputDate);
+  const date = new Date(inputDate);
   return date.toLocaleDateString();
 };
 
 export const sortActivitiesByName = (activities: IParkActivity[]) => {
   return activities.sort((a, b) => {
-    var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) return -1;
     if (nameA > nameB) return 1;
     return 0;
@@ -89,9 +89,9 @@ export const sortActivitiesByName = (activities: IParkActivity[]) => {
 };
 
 export const formatPhoneNum = (phoneNum: string) => {
-  let phoneArr = phoneNum.split('').filter((item) => !isNaN(Number(item)));
-  let areaCode = phoneArr.slice(0, 3).join('');
-  let threeDigits = phoneArr.slice(3, 6).join('');
-  let fourDigits = phoneArr.slice(6).join('');
+  const phoneArr = phoneNum.split('').filter((item) => !isNaN(Number(item)));
+  const areaCode = phoneArr.slice(0, 3).join('');
+  const threeDigits = phoneArr.slice(3, 6).join('');
+  const fourDigits = phoneArr.slice(6).join('');
   return `${areaCode}-${threeDigits}-${fourDigits}`;
 };

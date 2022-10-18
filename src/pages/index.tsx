@@ -17,7 +17,13 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="fixed h-full w-full">
-        <Image layout="fill" objectFit="cover" className="fixed h-full w-full" src="/images/mountainForestMin.jpg" />
+        <Image
+          alt=""
+          layout="fill"
+          objectFit="cover"
+          className="fixed h-full w-full"
+          src="/images/mountainForestMin.jpg"
+        />
       </div>
 
       <main className="relative z-10 min-h-screen flex items-center justify-center">

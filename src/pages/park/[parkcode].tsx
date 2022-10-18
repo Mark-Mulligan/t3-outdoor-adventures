@@ -35,7 +35,13 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="fixed h-full w-full">
-        <Image layout="fill" objectFit="cover" className="fixed h-full w-full" src="/images/cliffsAndRoadMin.jpg" />
+        <Image
+          alt=""
+          layout="fill"
+          objectFit="cover"
+          className="fixed h-full w-full"
+          src="/images/cliffsAndRoadMin.jpg"
+        />
       </div>
       <div className="flex bg-slate-50/90 relative z-10">
         <ParkPageNav />
