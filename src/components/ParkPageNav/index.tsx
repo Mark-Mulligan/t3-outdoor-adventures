@@ -54,7 +54,7 @@ const ParkPageNav = () => {
         }`}
       >
         <li className="py-2 text-xl cursor-pointer hover:text-slate-600 md:block hidden">
-          <Link href="/">
+          <Link href="/parks">
             <span className="flex items-center">
               <svg
                 className="w-6 h-6 mr-3"
