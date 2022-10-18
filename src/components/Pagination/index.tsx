@@ -94,7 +94,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           <span className="sr-only">Previous Page</span>
           <svg
             aria-hidden="true"
-            className="s:w-5 xs:h-5 w-4 h-4 xs:m-0 m-[-0.5px]"
+            className="xs:w-5 xs:h-5 w-4 h-4 xs:m-0 m-[-0.5px]"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
