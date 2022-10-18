@@ -23,7 +23,7 @@ const ParkPageNav = () => {
   return (
     <nav className="flex-none md:w-[220px] w-full md:px-6 md:pt-6 px-0 pt-0 md:relative fixed z-10 overflow-hidden">
       <div className="md:hidden relative flex justify-between px-3 py-3 z-20 bg-slate-300">
-        <Link href="/">
+        <Link href="/parks">
           <span className="flex items-center">
             <svg
               className="w-6 h-6 mr-3"
