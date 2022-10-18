@@ -285,11 +285,7 @@ export default Home;
 
 export async function getStaticProps() {
   try {
-    console.log('PRISMA INSTANCE', prisma);
-
     const parks = await prisma.nationalParksData.findMany();
-
-    console.log('PARKS RESULT', parks);
 
     // Adding a space to the listed states so they fit better in the table
     const formattedParks = parks.map((park) => {
@@ -303,6 +299,7 @@ export async function getStaticProps() {
       }, // will be passed to the page component as props
     };
   } catch (err) {
+    console.log('PARKS PAGE ERROR -----------------------------', err);
     return {
       props: {
         parks: [],
