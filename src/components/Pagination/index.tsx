@@ -68,7 +68,7 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
               id="grid-state"
               value={limit}
               onChange={(e) =>
-                router.push({ pathname: '/', query: createQueryObject('limit', e.target.value) }, undefined, {
+                router.push({ pathname: '/parks', query: createQueryObject('limit', e.target.value) }, undefined, {
                   shallow: true,
                 })
               }
@@ -87,7 +87,9 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           className="block xs:py-2 xs:px-3 px-2 py-2 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
           title="Previous Page"
           onClick={() =>
-            router.push({ pathname: '/', query: createQueryObject('page', page - 1) }, undefined, { shallow: true })
+            router.push({ pathname: '/parks', query: createQueryObject('page', page - 1) }, undefined, {
+              shallow: true,
+            })
           }
           disabled={page === 1}
         >
@@ -111,7 +113,9 @@ const Pagination: FC<IProps> = ({ page, limit, totalPages, totalResults }) => {
           className="block py-2 xs:px-3 px-2 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
           title="Next Page"
           onClick={() =>
-            router.push({ pathname: '/', query: createQueryObject('page', page + 1) }, undefined, { shallow: true })
+            router.push({ pathname: '/parks', query: createQueryObject('page', page + 1) }, undefined, {
+              shallow: true,
+            })
           }
           disabled={page === totalPages}
         >

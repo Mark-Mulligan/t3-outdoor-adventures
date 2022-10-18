@@ -27,7 +27,7 @@ const PageBtn: FC<IProps> = ({ pageNumber, currentPage }) => {
     <button
       className={`${pageNumber === currentPage ? activeStyles : nonActiveStlyes}`}
       onClick={() =>
-        router.push({ pathname: '/', query: createQueryObject('page', pageNumber) }, undefined, { shallow: true })
+        router.push({ pathname: '/parks', query: createQueryObject('page', pageNumber) }, undefined, { shallow: true })
       }
     >
       {pageNumber}
