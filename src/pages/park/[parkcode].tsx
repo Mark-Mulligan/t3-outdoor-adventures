@@ -1,5 +1,5 @@
 // Next
-import type { NextPage, NextPageContext } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -87,11 +87,15 @@ const ParkPage: NextPage<IProps> = ({ parkData, googleMapsKey }) => {
   );
 };
 
-export async function getServerSideProps(context: NextPageContext) {
-  const parkCode = context.query.parkcode;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const parkCode = context?.params?.parkcode;
 
   if (typeof parkCode !== 'string') {
-    return;
+    return {
+      props: {
+        parkData: null,
+      }, // will be passed to the page component as props
+    };
   }
 
   try {
@@ -112,6 +116,13 @@ export async function getServerSideProps(context: NextPageContext) {
       }, // will be passed to the page component as props
     };
   }
+};
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
 }
 
 // # const { data } = await axios.get(
