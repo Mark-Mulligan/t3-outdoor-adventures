@@ -1,11 +1,14 @@
 // React
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 // Next
 import Link from 'next/link';
 
 // UUID
 import { v4 as uuidv4 } from 'uuid';
+
+// Context
+import { AppContext } from '../../context/AppContext';
 
 const parkSideNavItems = [
   { label: 'Description', id: 'description' },
@@ -18,12 +21,13 @@ const parkSideNavItems = [
 ];
 
 const ParkPageNav = () => {
+  const { lastSearchString } = useContext(AppContext);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="flex-none md:w-[220px] w-full md:px-6 md:pt-6 px-0 pt-0 md:relative fixed z-10 overflow-hidden">
       <div className="md:hidden relative flex justify-between px-3 py-3 z-20 bg-slate-300">
-        <Link href="/parks">
+        <Link href={`/parks${lastSearchString}`}>
           <span className="flex items-center">
             <svg
               className="w-6 h-6 mr-3"
@@ -54,7 +58,7 @@ const ParkPageNav = () => {
         }`}
       >
         <li className="py-2 text-xl cursor-pointer hover:text-slate-600 md:block hidden">
-          <Link href="/parks">
+          <Link href={`/parks${lastSearchString}`}>
             <span className="flex items-center">
               <svg
                 className="w-6 h-6 mr-3"

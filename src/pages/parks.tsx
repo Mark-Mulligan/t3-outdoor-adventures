@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction, useMemo, useContext } from 'react';
 
 // Next
 import type { NextPage } from 'next';
@@ -23,6 +23,9 @@ import MultiSelect from '../components/MultiSelect';
 
 // Types
 import { ParkTableData } from '../customTypes/parks';
+
+// Context
+import { AppContext } from '../context/AppContext';
 
 // Utils
 import { stateList, designationList } from '../utils/util';
@@ -57,6 +60,7 @@ const columns: TableColumn<ParkTableData>[] = [
 
 const Home: NextPage<IProps> = ({ parks }) => {
   const router = useRouter();
+  const { setLastSearchString } = useContext(AppContext);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -121,6 +125,18 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
     setSelectedOptions(result);
   };
+
+  useEffect(() => {
+    if (router.asPath) {
+      let searchString = '';
+      if (router.asPath.includes('?')) {
+        const startingPoint = router.asPath.indexOf('?');
+        searchString = router.asPath.slice(startingPoint);
+      }
+
+      setLastSearchString(searchString);
+    }
+  }, [router.asPath, setLastSearchString]);
 
   useEffect(() => {
     const queryPage = router.query.page || '';
