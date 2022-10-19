@@ -134,8 +134,8 @@ const ImageModal: FC<IProps> = ({ showModal, setShowModal, images, selectedImage
             </span>
           </button>
 
-          <p className="px-16 text-center">{images[selectedImageIndex]?.caption}</p>
-          <p className="px-16 text-center italic">
+          <p className="px-16 text-center text-white">{images[selectedImageIndex]?.caption}</p>
+          <p className="px-16 text-center font-light text-slate-400 italic">
             Photo {selectedImageIndex + 1} of {images.length}
           </p>
         </div>
