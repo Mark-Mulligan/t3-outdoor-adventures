@@ -60,7 +60,7 @@ const columns: TableColumn<ParkTableData>[] = [
 
 const Home: NextPage<IProps> = ({ parks }) => {
   const router = useRouter();
-  const { setLastSearchString } = useContext(AppContext);
+  const { setLastSearchString, lastSearchString } = useContext(AppContext);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -125,6 +125,13 @@ const Home: NextPage<IProps> = ({ parks }) => {
 
     setSelectedOptions(result);
   };
+
+  useEffect(() => {
+    if (lastSearchString) {
+      router.replace(`/parks${lastSearchString}`, undefined, { shallow: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (router.asPath) {
